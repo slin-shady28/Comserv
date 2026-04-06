@@ -143,7 +143,7 @@ const tabs = [
   { name: "Winter", emoji: "❄️", gradient: "from-cyan-300 via-sky-300 to-indigo-300", bg: "from-cyan-50 to-indigo-50", accent: "text-sky-800" }
 ]
 
-const pageOrder = ["home", "services", "schedule", "how", "policy", "booking", "feedback", "safety"]
+const pageOrder = ["home", "about", "services", "schedule", "how", "policy", "booking", "feedback", "safety"]
 
 export const __testCases = [
   { name: "default season is Spring", expected: "Spring" },
@@ -170,6 +170,7 @@ export const __testCases = [
 
 const pageInfo = {
   home: { label: "Home", icon: Home },
+  about: { label: "About Me", icon: Star },
   services: { label: "Services", icon: Briefcase },
   schedule: { label: "Schedule", icon: CalendarDays },
   how: { label: "How It Works", icon: ClipboardCheck },
@@ -344,6 +345,7 @@ export default function SeasonalSideHustleWebsite() {
             <div className="flex flex-wrap items-center justify-center gap-3">
               {[
                 ["home", "Home", Home],
+                ["about", "About Me", Star],
                 ["services", "Services", Briefcase],
                 ["schedule", "Schedule", CalendarDays],
                 ["how", "How It Works", ClipboardCheck],
@@ -483,6 +485,92 @@ export default function SeasonalSideHustleWebsite() {
                   </motion.div>
                 </section>
               </motion.div>
+            )}
+
+            {activePage === "about" && (
+              <motion.section key="about" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.28 }} className="mb-12">
+                <div className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white bg-white shadow-xl">
+                  <div className="bg-gradient-to-r from-yellow-200 via-pink-200 to-sky-200 px-6 py-8 md:px-10">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-black text-slate-800 shadow-sm">
+                      <Star className="h-4 w-4" />
+                      About Zach
+                    </div>
+                    <h2 className="text-4xl font-black tracking-tight text-slate-900 md:text-5xl">Why this even exists</h2>
+                    <p className="mt-3 max-w-3xl text-lg leading-relaxed text-slate-700">
+                      This is the official story of how a kid, some free time, and a strong respect for cash turned into a neighborhood service website.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-6 p-6 md:p-8 lg:grid-cols-[1.05fr_0.95fr]">
+                    <div className="space-y-5">
+                      <div className="rounded-[1.5rem] border border-yellow-100 bg-yellow-50 p-5">
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">The origin story</h3>
+                        <p className="text-base leading-relaxed text-slate-700">
+                          I was bored and loved helping. That is a dangerous combination because it creates productivity.
+                          Instead of just sitting around, I figured I could help people out, stay busy, and make the day less boring.
+                        </p>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-sky-100 bg-sky-50 p-5">
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">Hockey energy</h3>
+                        <p className="text-base leading-relaxed text-slate-700">
+                          I play hockey, so I already understand important business skills like effort, speed, balance, and not quitting when something gets annoying.
+                          Basically, if I can chase a puck, I can probably sweep a porch.
+                        </p>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5">
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">Financial honesty</h3>
+                        <p className="text-base leading-relaxed text-slate-700">
+                          I love money. Not in a villain way. In a "working hard and getting paid feels awesome" way.
+                          Money means saving up, buying stuff I want, and proving that being helpful can actually pay off.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-5">
+                      <div className="rounded-[1.75rem] bg-slate-900 p-6 text-white shadow-lg">
+                        <div className="mb-3 text-sm font-bold uppercase tracking-wide text-sky-200">Zach Stats</div>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <div className="rounded-2xl bg-white/10 p-4">
+                            <div className="text-sm text-white/70">Started because</div>
+                            <div className="text-xl font-black">Boredom</div>
+                          </div>
+                          <div className="rounded-2xl bg-white/10 p-4">
+                            <div className="text-sm text-white/70">Favorite bonus</div>
+                            <div className="text-xl font-black">Getting paid</div>
+                          </div>
+                          <div className="rounded-2xl bg-white/10 p-4">
+                            <div className="text-sm text-white/70">Sport</div>
+                            <div className="text-xl font-black">Hockey</div>
+                          </div>
+                          <div className="rounded-2xl bg-white/10 p-4">
+                            <div className="text-sm text-white/70">Business mood</div>
+                            <div className="text-xl font-black">Helpful but hilarious</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-pink-100 bg-pink-50 p-5">
+                        <h3 className="mb-3 text-2xl font-black text-slate-900">Things I bring to the job</h3>
+                        <div className="space-y-3 text-slate-700">
+                          <div className="rounded-2xl bg-white p-4 shadow-sm">A good attitude and at least medium-level comedic value.</div>
+                          <div className="rounded-2xl bg-white p-4 shadow-sm">Real effort, not fake "I touched it once" effort.</div>
+                          <div className="rounded-2xl bg-white p-4 shadow-sm">Outdoor-only service because I like safety and simple rules.</div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-amber-100 bg-gradient-to-r from-amber-50 to-orange-50 p-5">
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">Final statement</h3>
+                        <p className="text-base leading-relaxed text-slate-700">
+                          This business was built on three powerful ideas:
+                          helping people, playing hockey, and respecting the beauty of a paid job well done.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.section>
             )}
 
             {activePage === "services" && (
