@@ -129,13 +129,6 @@ const policyRules = [
   "I will pay the price of the service selected below."
 ]
 
-const quickFacts = [
-  ["Season tabs", "4 sections"],
-  ["Service booking", "Text Zach"],
-  ["Outdoor jobs", "Safe choices"],
-  ["Best starter", "Plant watering"]
-]
-
 const tabs = [
   { name: "Spring", emoji: "🌸", gradient: "from-emerald-400 via-teal-300 to-cyan-300", bg: "from-emerald-50 to-cyan-50", accent: "text-emerald-700" },
   { name: "Summer", emoji: "☀️", gradient: "from-amber-300 via-orange-300 to-cyan-300", bg: "from-amber-50 to-cyan-50", accent: "text-orange-700" },
@@ -143,7 +136,7 @@ const tabs = [
   { name: "Winter", emoji: "❄️", gradient: "from-sky-300 via-cyan-300 to-teal-300", bg: "from-sky-50 to-cyan-50", accent: "text-sky-800" }
 ]
 
-const pageOrder = ["home", "services", "policy", "schedule", "booking", "how", "about", "feedback", "safety"]
+const pageOrder = ["home", "services", "how", "policy", "schedule", "booking", "about", "feedback", "safety"]
 
 export const __testCases = [
   { name: "default season is Spring", expected: "Spring" },
@@ -154,7 +147,6 @@ export const __testCases = [
   { name: "qr section exists", expected: true },
   { name: "policy gate can open before booking", expected: true },
   { name: "service list uses outdoor-only jobs", expected: true },
-  { name: "quickFacts is a valid 4-item array", expected: true },
   { name: "each service has a displayed price", expected: true },
   { name: "qr code value points to sms booking link", expected: true },
   { name: "booking template includes name address service and day time", expected: true },
@@ -175,7 +167,7 @@ const pageInfo = {
   schedule: { label: "Schedule", icon: CalendarDays },
   how: { label: "How It Works", icon: ClipboardCheck },
   policy: { label: "Policy", icon: Shield },
-  booking: { label: "Book Zach", icon: Phone },
+  booking: { label: "Text Zach", icon: Phone },
   feedback: { label: "Feedback", icon: MessageSquare },
   safety: { label: "Safety", icon: Sparkles }
 }
@@ -186,7 +178,6 @@ export default function SeasonalSideHustleWebsite() {
   const [activeSeason, setActiveSeason] = useState("Spring")
   const [openSeason, setOpenSeason] = useState("Spring")
   const [search, setSearch] = useState("")
-  const [savedCount, setSavedCount] = useState(3)
   const [selectedService, setSelectedService] = useState("Front yard cleanup")
   const [activePage, setActivePage] = useState("home")
   const [requestedDate, setRequestedDate] = useState("")
@@ -230,15 +221,6 @@ export default function SeasonalSideHustleWebsite() {
 • Plant Watering ($6–$10)
 • Leaf Raking & Bagging ($12–$22)
 • Porch / Driveway Sweeping ($7–$12)\n\nAll jobs are outdoor only and require a quick agreement 👍\n\nWhat job do you need?`
-
-  const handleSeasonSelect = (season) => {
-    setActiveSeason(season)
-    setOpenSeason(season)
-    setActivePage("services")
-    setTimeout(() => {
-      jobsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
-    }, 50)
-  }
 
   const handleDropdownToggle = (season) => {
     if (openSeason === season) {
@@ -339,16 +321,16 @@ export default function SeasonalSideHustleWebsite() {
           <motion.nav initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="sticky top-0 z-20 mb-6 rounded-[1.5rem] border border-white bg-white/85 px-4 py-3 shadow-lg backdrop-blur">
             <div className="mb-3 flex items-center justify-center gap-2 text-sm font-semibold text-slate-500">
               <Sparkles className="h-4 w-4" />
-              <span>Use the tabs or the arrows below to move around the website</span>
+              <span>Follow the steps from services to booking for the cleanest flow</span>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               {[
                 ["home", "Home", Home],
                 ["services", "Services", Briefcase],
+                ["how", "How It Works", ClipboardCheck],
                 ["policy", "Policy", Shield],
                 ["schedule", "Schedule", CalendarDays],
-                ["booking", "Book Zach", Phone],
-                ["how", "How It Works", ClipboardCheck],
+                ["booking", "Text Zach", Phone],
                 ["about", "About Me", Star],
                 ["feedback", "Feedback", MessageSquare],
                 ["safety", "Safety", Sparkles],
@@ -432,22 +414,26 @@ export default function SeasonalSideHustleWebsite() {
                       <div className="space-y-4">
                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
                           <div className="text-sm font-semibold text-slate-500">Step 1</div>
-                          <div className="text-lg font-black text-slate-900">Read how it works</div>
+                          <div className="text-lg font-black text-slate-900">Browse the services</div>
                         </div>
                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
                           <div className="text-sm font-semibold text-slate-500">Step 2</div>
-                          <div className="text-lg font-black text-slate-900">Pick a service</div>
+                          <div className="text-lg font-black text-slate-900">Read how it works</div>
                         </div>
                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
                           <div className="text-sm font-semibold text-slate-500">Step 3</div>
-                          <div className="text-lg font-black text-slate-900">Request a time by text</div>
+                          <div className="text-lg font-black text-slate-900">Read the policy first</div>
+                        </div>
+                        <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                          <div className="text-sm font-semibold text-slate-500">Step 4</div>
+                          <div className="text-lg font-black text-slate-900">Pick a time and text Zach</div>
                         </div>
                         <div className="grid gap-3 pt-2">
                           <button type="button" onClick={() => goToPage("services")} className="rounded-2xl bg-slate-900 px-5 py-3 text-left font-bold text-white shadow-md transition-transform hover:scale-105">
                             Open Services
                           </button>
-                          <button type="button" onClick={() => goToPage("how")} className="rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-3 text-left font-bold text-white shadow-md transition-transform hover:scale-105">
-                            See How It Works
+                          <button type="button" onClick={() => goToPage("policy")} className="rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-3 text-left font-bold text-white shadow-md transition-transform hover:scale-105">
+                            Read Policy
                           </button>
                         </div>
                         <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
@@ -564,9 +550,9 @@ export default function SeasonalSideHustleWebsite() {
                     <div className="relative">
                       <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={`Search ${activeSeason.toLowerCase()} services...`} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-300" />
                     </div>
-                    <button type="button" onClick={() => setSavedCount((count) => count + 1)} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white transition-transform hover:scale-105">
-                      <Star className="h-4 w-4" />
-                      Save Idea
+                    <button type="button" onClick={() => goToPage("how")} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white transition-transform hover:scale-105">
+                      <ClipboardCheck className="h-4 w-4" />
+                      See Booking Steps
                     </button>
                   </div>
 
@@ -835,7 +821,7 @@ export default function SeasonalSideHustleWebsite() {
                 <div className="mx-auto max-w-5xl rounded-[2rem] bg-gradient-to-br from-slate-900 via-teal-700 to-sky-500 p-6 text-white shadow-xl md:p-8">
                   <div className="grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
                     <div>
-                      <div className="mb-4 inline-flex rounded-full bg-white/20 px-4 py-2 text-sm font-bold backdrop-blur-sm">For Zach to Do the Service</div>
+                      <div className="mb-4 inline-flex rounded-full bg-white/20 px-4 py-2 text-sm font-bold backdrop-blur-sm">Final Step</div>
                       <h2 className="mb-3 text-3xl font-black md:text-4xl">Choose a service and text Zach</h2>
                       <p className="mb-5 text-lg leading-relaxed text-white/90">Pick the service you want, then continue to the scheduling page to request a day and time before sending the booking request.</p>
                       <div className="space-y-4">
