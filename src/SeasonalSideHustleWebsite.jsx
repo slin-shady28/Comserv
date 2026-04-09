@@ -143,7 +143,7 @@ const tabs = [
   { name: "Winter", emoji: "❄️", gradient: "from-sky-300 via-cyan-300 to-teal-300", bg: "from-sky-50 to-cyan-50", accent: "text-sky-800" }
 ]
 
-const pageOrder = ["home", "about", "how", "services", "policy", "schedule", "booking", "feedback", "safety"]
+const pageOrder = ["home", "services", "policy", "schedule", "booking", "how", "about", "feedback", "safety"]
 
 export const __testCases = [
   { name: "default season is Spring", expected: "Spring" },
@@ -344,12 +344,12 @@ export default function SeasonalSideHustleWebsite() {
             <div className="flex flex-wrap items-center justify-center gap-3">
               {[
                 ["home", "Home", Home],
-                ["about", "About Me", Star],
-                ["how", "How It Works", ClipboardCheck],
                 ["services", "Services", Briefcase],
                 ["policy", "Policy", Shield],
                 ["schedule", "Schedule", CalendarDays],
                 ["booking", "Book Zach", Phone],
+                ["how", "How It Works", ClipboardCheck],
+                ["about", "About Me", Star],
                 ["feedback", "Feedback", MessageSquare],
                 ["safety", "Safety", Sparkles],
               ].map(([key, label, Icon]) => (
@@ -412,10 +412,6 @@ export default function SeasonalSideHustleWebsite() {
                         Only in S. FL Avenir Coral Isles Circle for now...
                       </div>
                       <div className="mb-6 flex flex-wrap gap-3">
-                        <a href={telHref} className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white shadow-lg transition-transform hover:scale-105">
-                          <Phone className="h-4 w-4" />
-                          Call {brand.phone}
-                        </a>
                         <a href={smsHref} className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-3 font-bold text-white shadow-lg transition-transform hover:scale-105">
                           <MessageSquare className="h-4 w-4" />
                           Text to Book
