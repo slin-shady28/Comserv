@@ -136,7 +136,19 @@ const tabs = [
   { name: "Winter", emoji: "❄️", gradient: "from-sky-300 via-cyan-300 to-teal-300", bg: "from-sky-50 to-cyan-50", accent: "text-sky-800" }
 ]
 
-const pageOrder = ["home", "services", "how", "policy", "schedule", "booking", "about", "feedback", "safety"]
+const navItems = [
+  { key: "home", label: "Home", icon: Home },
+  { key: "services", label: "Services", icon: Briefcase },
+  { key: "how", label: "How It Works", icon: ClipboardCheck },
+  { key: "policy", label: "Policy", icon: Shield },
+  { key: "schedule", label: "Schedule", icon: CalendarDays },
+  { key: "booking", label: "Text Zach", icon: Phone },
+  { key: "about", label: "About Me", icon: Star },
+  { key: "feedback", label: "Feedback", icon: MessageSquare },
+  { key: "safety", label: "Safety", icon: Sparkles },
+]
+
+const pageOrder = navItems.map((item) => item.key)
 
 export const __testCases = [
   { name: "default season is Spring", expected: "Spring" },
@@ -160,17 +172,7 @@ export const __testCases = [
   { name: "feedback form exists", expected: true }
 ]
 
-const pageInfo = {
-  home: { label: "Home", icon: Home },
-  about: { label: "About Me", icon: Star },
-  services: { label: "Services", icon: Briefcase },
-  schedule: { label: "Schedule", icon: CalendarDays },
-  how: { label: "How It Works", icon: ClipboardCheck },
-  policy: { label: "Policy", icon: Shield },
-  booking: { label: "Text Zach", icon: Phone },
-  feedback: { label: "Feedback", icon: MessageSquare },
-  safety: { label: "Safety", icon: Sparkles }
-}
+const pageInfo = Object.fromEntries(navItems.map((item) => [item.key, { label: item.label, icon: item.icon }]))
 
 export default function SeasonalSideHustleWebsite() {
   const [showPolicyGate, setShowPolicyGate] = useState(false)
@@ -321,20 +323,10 @@ export default function SeasonalSideHustleWebsite() {
           <motion.nav initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="sticky top-0 z-20 mb-6 rounded-[1.5rem] border border-white bg-white/85 px-4 py-3 shadow-lg backdrop-blur">
             <div className="mb-3 flex items-center justify-center gap-2 text-sm font-semibold text-slate-500">
               <Sparkles className="h-4 w-4" />
-              <span>Follow the steps from services to booking for the cleanest flow</span>
+              <span>Move left to right from services to texting for the easiest booking path</span>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              {[
-                ["home", "Home", Home],
-                ["services", "Services", Briefcase],
-                ["how", "How It Works", ClipboardCheck],
-                ["policy", "Policy", Shield],
-                ["schedule", "Schedule", CalendarDays],
-                ["booking", "Text Zach", Phone],
-                ["about", "About Me", Star],
-                ["feedback", "Feedback", MessageSquare],
-                ["safety", "Safety", Sparkles],
-              ].map(([key, label, Icon]) => (
+              {navItems.map(({ key, label, icon: Icon }) => (
                 <button key={key} type="button" onClick={() => goToPage(key)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold transition-all ${
                   activePage === key
                     ? key === "booking"
@@ -409,7 +401,7 @@ export default function SeasonalSideHustleWebsite() {
                     <div className="rounded-[1.75rem] border border-white bg-white/85 p-6 shadow-lg backdrop-blur">
                       <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700">
                         <SunMedium className="h-4 w-4" />
-                        Start Here
+                        Quick Start
                       </div>
                       <div className="space-y-4">
                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
@@ -428,12 +420,18 @@ export default function SeasonalSideHustleWebsite() {
                           <div className="text-sm font-semibold text-slate-500">Step 4</div>
                           <div className="text-lg font-black text-slate-900">Pick a time and text Zach</div>
                         </div>
-                        <div className="grid gap-3 pt-2">
+                        <div className="grid gap-3 pt-2 sm:grid-cols-2">
                           <button type="button" onClick={() => goToPage("services")} className="rounded-2xl bg-slate-900 px-5 py-3 text-left font-bold text-white shadow-md transition-transform hover:scale-105">
                             Open Services
                           </button>
+                          <button type="button" onClick={() => goToPage("how")} className="rounded-2xl bg-white px-5 py-3 text-left font-bold text-slate-900 shadow-md ring-1 ring-slate-200 transition-transform hover:scale-105">
+                            See the Steps
+                          </button>
                           <button type="button" onClick={() => goToPage("policy")} className="rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-3 text-left font-bold text-white shadow-md transition-transform hover:scale-105">
                             Read Policy
+                          </button>
+                          <button type="button" onClick={() => goToPage("schedule")} className="rounded-2xl bg-white px-5 py-3 text-left font-bold text-slate-900 shadow-md ring-1 ring-slate-200 transition-transform hover:scale-105">
+                            Pick a Time
                           </button>
                         </div>
                         <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
