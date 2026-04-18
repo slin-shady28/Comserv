@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { QRCodeSVG } from "qrcode.react"
+import logoUrl from "./assets/zachs-easy-side-jobs-logo.svg"
 import {
   ArrowLeft,
   ArrowRight,
@@ -163,11 +164,11 @@ const tabs = [
 
 const navItems = [
   { key: "home", label: "Home", icon: Home },
-  { key: "services", label: "Services", icon: Briefcase },
+  { key: "services", label: "Booking", icon: Briefcase },
+  { key: "pricing", label: "Pricing", icon: DollarSign },
   { key: "how", label: "How It Works", icon: ClipboardCheck },
   { key: "policy", label: "Policy", icon: Shield },
-  { key: "schedule", label: "Schedule", icon: CalendarDays },
-  { key: "booking", label: "Book", icon: Phone },
+  { key: "area", label: "Service Area", icon: MapPin },
   { key: "stats", label: "My Stats", icon: BarChart3 },
   { key: "faq", label: "FAQ", icon: HelpCircle },
   { key: "about", label: "About Me", icon: Star },
@@ -199,10 +200,15 @@ export const __testCases = [
   { name: "feedback form exists", expected: true },
   { name: "stats tab exists", expected: true },
   { name: "booking stats are saved locally", expected: true },
-  { name: "faq tab exists", expected: true }
+  { name: "faq tab exists", expected: true },
+  { name: "pricing tab exists", expected: true },
+  { name: "service area tab exists", expected: true }
 ]
 
-const pageInfo = Object.fromEntries(navItems.map((item) => [item.key, { label: item.label, icon: item.icon }]))
+const pageInfo = {
+  ...Object.fromEntries(navItems.map((item) => [item.key, { label: item.label, icon: item.icon }])),
+  booking: { label: "Booking", icon: Phone },
+}
 
 const statsStorageKey = "zachs-easy-side-jobs-stats"
 const statsSessionKey = "zachs-easy-side-jobs-visit-counted"
@@ -240,6 +246,11 @@ const saveStats = (stats) => {
   return stats
 }
 
+const isLocalPreview = () => {
+  if (typeof window === "undefined") return false
+  return ["localhost", "127.0.0.1"].includes(window.location.hostname)
+}
+
 const pageMotion = {
   initial: { opacity: 0, y: 22, scale: 0.99 },
   animate: { opacity: 1, y: 0, scale: 1 },
@@ -264,6 +275,7 @@ const serviceCardMotion = {
 
 export default function SeasonalSideHustleWebsite() {
   const [showPolicyGate, setShowPolicyGate] = useState(false)
+  const [showWaiver, setShowWaiver] = useState(false)
   const [policyRead, setPolicyRead] = useState(false)
   const [activeSeason, setActiveSeason] = useState("Spring")
   const [openSeason, setOpenSeason] = useState("Spring")
@@ -275,8 +287,8 @@ export default function SeasonalSideHustleWebsite() {
   const [stats, setStats] = useState(loadStats)
 
   const jobsSectionRef = useRef(null)
+  const pricingSectionRef = useRef(null)
   const aboutSectionRef = useRef(null)
-  const scheduleSectionRef = useRef(null)
   const howRef = useRef(null)
   const feedbackSectionRef = useRef(null)
   const safetySectionRef = useRef(null)
@@ -284,12 +296,14 @@ export default function SeasonalSideHustleWebsite() {
   const policySectionRef = useRef(null)
   const statsSectionRef = useRef(null)
   const faqSectionRef = useRef(null)
+  const areaSectionRef = useRef(null)
   const topRef = useRef(null)
 
   const activeTab = tabs.find((tab) => tab.name === activeSeason) ?? tabs[0]
 
   useEffect(() => {
     if (typeof window === "undefined") return
+    if (isLocalPreview()) return
     if (window.sessionStorage.getItem(statsSessionKey)) return
 
     window.sessionStorage.setItem(statsSessionKey, "true")
@@ -324,6 +338,8 @@ export default function SeasonalSideHustleWebsite() {
   const totalBookings = stats.totalBookings ?? 0
   const topBookedService = bookingRows.find((service) => service.bookings > 0)
   const lastUpdated = stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleString() : "Not yet"
+  const activityCount = (stats.visits ?? 0) + totalBookings
+  const activityFill = Math.min(100, activityCount * 12)
 
   const selectedServicePrice = uniqueServices.find((item) => item.job === selectedService)?.pay ?? "Price agreed before starting"
   const selectedServicePriceUsd = `${selectedServicePrice} USD`
@@ -347,6 +363,16 @@ export default function SeasonalSideHustleWebsite() {
         lastUpdated: new Date().toISOString(),
       })
     })
+  }
+
+  const recordManualVisit = () => {
+    setStats((currentStats) =>
+      saveStats({
+        ...currentStats,
+        visits: (currentStats.visits ?? 0) + 1,
+        lastUpdated: new Date().toISOString(),
+      })
+    )
   }
 
   const resetStats = () => {
@@ -384,15 +410,30 @@ export default function SeasonalSideHustleWebsite() {
     }, 50)
   }
 
+  const openWaiver = () => {
+    setShowPolicyGate(false)
+    setShowWaiver(true)
+  }
+
+  const agreeToWaiver = () => {
+    setPolicyRead(true)
+    setShowWaiver(false)
+    setActivePage("booking")
+    setTimeout(() => {
+      bookingSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+    }, 50)
+  }
+
   const goToPage = (page) => {
     const refMap = {
       home: topRef,
       about: aboutSectionRef,
       how: howRef,
       services: jobsSectionRef,
+      pricing: pricingSectionRef,
       policy: policySectionRef,
-      schedule: scheduleSectionRef,
       booking: bookingSectionRef,
+      area: areaSectionRef,
       stats: statsSectionRef,
       faq: faqSectionRef,
       feedback: feedbackSectionRef,
@@ -410,7 +451,7 @@ export default function SeasonalSideHustleWebsite() {
 
   const pageIndex = pageOrder.indexOf(activePage)
   const prevPage = pageIndex > 0 ? pageOrder[pageIndex - 1] : null
-  const nextPage = pageIndex < pageOrder.length - 1 ? pageOrder[pageIndex + 1] : null
+  const nextPage = pageIndex >= 0 && pageIndex < pageOrder.length - 1 ? pageOrder[pageIndex + 1] : null
 
   return (
     <>
@@ -426,15 +467,50 @@ export default function SeasonalSideHustleWebsite() {
                 <span>Policy - Done - Booking</span>
               </div>
               <button type="button" onClick={() => {
-                setShowPolicyGate(false)
-                setActivePage("policy")
-                setTimeout(() => {
-                  policySectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
-                }, 50)
+                openWaiver()
               }} className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white">
-                Go to Policy Page
+                Open Waiver
                 <ArrowRight className="h-4 w-4" />
               </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showWaiver && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+            <motion.div initial={{ scale: 0.94, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.96, opacity: 0 }} className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] bg-white p-6 shadow-2xl md:p-8">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-teal-100 px-4 py-2 text-sm font-black text-teal-700">
+                <FileSignature className="h-4 w-4" />
+                Waiver + Service Agreement
+              </div>
+              <h2 className="mb-3 text-3xl font-black text-slate-900">Read Before Booking</h2>
+              <p className="mb-5 leading-relaxed text-slate-600">
+                By requesting a service, the customer agrees that the job is outdoor-only, the service area is limited, and the requested time is not confirmed until Zach agrees.
+              </p>
+              <div className="mb-6 grid gap-3">
+                {[
+                  "All work must stay outside in the front yard, porch, driveway, or approved outdoor area.",
+                  "Zach will not enter any house for any reason.",
+                  "The service, price, day, and time must be clear before work starts.",
+                  "A parent or guardian should know about the request before the job begins.",
+                  "Payment is made after the job is complete.",
+                ].map((item, index) => (
+                  <div key={item} className="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-sm font-black text-white">{index + 1}</div>
+                    <p className="pt-1 text-sm font-semibold leading-relaxed text-slate-700">{item}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-wrap justify-end gap-3">
+                <button type="button" onClick={() => setShowWaiver(false)} className="rounded-2xl border border-slate-200 bg-white px-5 py-3 font-bold text-slate-700">
+                  Close
+                </button>
+                <button type="button" onClick={agreeToWaiver} className="rounded-2xl bg-slate-900 px-5 py-3 font-black text-white">
+                  I Agree - Continue To Booking
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -461,7 +537,7 @@ export default function SeasonalSideHustleWebsite() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               {navItems.map(({ key, label, icon: Icon }) => (
-                <motion.button key={key} type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} onClick={() => goToPage(key)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold transition-all ${
+                <motion.button key={key} type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} onClick={() => goToPage(key)} className={`inline-flex items-center gap-2 rounded-full font-bold transition-all ${key === "services" ? "px-5 py-3 text-base" : "px-4 py-2"} ${
                   activePage === key
                     ? key === "booking"
                       ? "scale-105 bg-gradient-to-r from-teal-600 to-sky-500 text-white shadow-md"
@@ -503,6 +579,9 @@ export default function SeasonalSideHustleWebsite() {
 
                   <div className="relative grid items-start gap-8 lg:grid-cols-[1.2fr_0.8fr]">
                     <div>
+                      <div className="mb-5 max-w-md rounded-[1.5rem] border border-white bg-white/85 p-3 shadow-lg backdrop-blur">
+                        <img src={logoUrl} alt="Zach's Easy Side Jobs" className="h-auto w-full" />
+                      </div>
                       <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white bg-white/80 px-4 py-2 text-sm font-semibold shadow-sm">
                         <BadgeCheck className="h-4 w-4" />
                         <span>Outdoor services for neighbors</span>
@@ -564,7 +643,7 @@ export default function SeasonalSideHustleWebsite() {
                           <button type="button" onClick={() => goToPage("policy")} className="rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-3 text-left font-bold text-white shadow-md transition-transform hover:scale-105">
                             Read Policy
                           </button>
-                          <button type="button" onClick={() => goToPage("schedule")} className="rounded-2xl bg-white px-5 py-3 text-left font-bold text-slate-900 shadow-md ring-1 ring-slate-200 transition-transform hover:scale-105">
+                          <button type="button" onClick={() => goToPage("booking")} className="rounded-2xl bg-white px-5 py-3 text-left font-bold text-slate-900 shadow-md ring-1 ring-slate-200 transition-transform hover:scale-105">
                             Pick a Time
                           </button>
                         </div>
@@ -783,8 +862,8 @@ export default function SeasonalSideHustleWebsite() {
                                         setShowPolicyGate(true)
                                         return
                                       }
-                                      setActivePage("schedule")
-                                      setTimeout(() => scheduleSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50)
+                                      setActivePage("booking")
+                                      setTimeout(() => bookingSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50)
                                     }} className="rounded-2xl border border-white bg-white px-4 py-4 text-left shadow-sm">
                                       <div className="mb-2 flex items-start justify-between gap-3">
                                         <div className="text-lg font-bold leading-tight">{item.job}</div>
@@ -818,80 +897,44 @@ export default function SeasonalSideHustleWebsite() {
               </motion.section>
             )}
 
-            {activePage === "schedule" && (
-              <motion.section key="schedule" ref={scheduleSectionRef} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.28 }} className="mb-10">
-                <div className="mx-auto max-w-5xl rounded-[2rem] border border-white bg-white p-6 shadow-xl md:p-8">
-                  <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                      <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-sky-100 px-4 py-2 text-sm font-bold text-sky-700">
-                        <CalendarDays className="h-4 w-4" />
-                        Schedule Service
-                      </div>
-                      <h2 className="mb-2 text-3xl font-black">Request a day and time</h2>
-                      <p className="text-slate-600">Customers can request a service time here, but the appointment is only confirmed after Zach agrees to it.</p>
+            {activePage === "pricing" && (
+              <motion.section key="pricing" ref={pricingSectionRef} {...pageMotion} className="mb-12">
+                <div className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white bg-white shadow-xl">
+                  <div className="bg-gradient-to-r from-slate-950 via-emerald-800 to-teal-700 p-6 text-white md:p-8">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur">
+                      <DollarSign className="h-4 w-4" />
+                      Simple Price Menu
                     </div>
-                    <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800">
-                      Only 2 service requests per day
-                    </div>
+                    <h2 className="mb-2 text-3xl font-black md:text-4xl">Clear Prices Before Work Starts</h2>
+                    <p className="max-w-2xl text-white/85">
+                      Prices depend on the size of the job. Zach confirms the service and price before starting.
+                    </p>
                   </div>
 
-                  <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-                    <div className="space-y-4">
-                      <div className="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5">
-                        <label className="mb-2 block text-sm font-bold text-slate-700">Choose a service</label>
-                        <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-900 outline-none">
-                          {uniqueServices.map((service) => (
-                            <option key={service.job} value={service.job}>{service.job} - {service.pay} USD</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="grid gap-4 md:grid-cols-2">
-                        <div className="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5">
-                          <label className="mb-2 block text-sm font-bold text-slate-700">Requested date</label>
-                          <input type="date" value={requestedDate} onChange={(e) => setRequestedDate(e.target.value)} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-900 outline-none" />
+                  <div className="grid gap-4 p-6 md:grid-cols-2 md:p-8">
+                    {uniqueServices.slice(0, 12).map((service) => (
+                      <motion.button key={service.job} type="button" variants={serviceCardMotion} initial="hidden" animate="show" whileHover={{ y: -4, boxShadow: "0 16px 30px rgba(15, 23, 42, 0.1)" }} whileTap={{ scale: 0.98 }} onClick={() => {
+                        setSelectedService(service.job)
+                        setActivePage("booking")
+                        setTimeout(() => bookingSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50)
+                      }} className="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 text-left shadow-sm">
+                        <div className="mb-3 flex items-start justify-between gap-4">
+                          <div>
+                            <div className="font-black text-slate-900">{service.job}</div>
+                            <div className="mt-1 text-sm font-semibold text-slate-500">{service.level}</div>
+                          </div>
+                          <div className="rounded-full bg-white px-4 py-2 text-sm font-black text-emerald-700 shadow-sm">{service.pay}</div>
                         </div>
-                        <div className="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5">
-                          <label className="mb-2 block text-sm font-bold text-slate-700">Requested time</label>
-                          <select value={requestedTime} onChange={(e) => setRequestedTime(e.target.value)} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-900 outline-none">
-                            <option>After School</option>
-                          <div className="text-slate-600">4:00 PM - 6:30 PM</div>
-                            <option>4:30 PM</option>
-                            <option>5:00 PM</option>
-                            <option>5:30 PM</option>
-                            <option>Weekend Morning</option>
-                            <option>Weekend Afternoon</option>
-                          </select>
+                        <div className="inline-flex items-center gap-2 text-sm font-black text-teal-700">
+                          Request this price
+                          <ArrowRight className="h-4 w-4" />
                         </div>
-                      </div>
+                      </motion.button>
+                    ))}
+                  </div>
 
-                      <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-5 text-slate-800">
-                        <div className="mb-2 font-black">Scheduling rules</div>
-                        <div className="space-y-2 text-sm leading-relaxed">
-                          <p>Only 2 service requests can be scheduled per day.</p>
-                          <p>Your requested time is not approved automatically.</p>
-                          <p>Zach has to agree to the day and time before the service is confirmed.</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rounded-[1.5rem] bg-gradient-to-br from-slate-900 to-slate-700 p-5 text-white shadow-lg">
-                      <div className="mb-2 text-sm font-bold text-sky-200">Schedule summary</div>
-                      <div className="mb-3 text-2xl font-black">{selectedService}</div>
-                      <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold">
-                        <DollarSign className="h-4 w-4" />
-                        {selectedServicePriceUsd}
-                      </div>
-                      <div className="mb-4 rounded-2xl bg-white/10 p-4 text-sm leading-relaxed text-white/90">
-                        Requested slot: {requestedSlot}
-                      </div>
-                      <div className="mb-4 rounded-2xl border border-white/15 bg-white/10 p-4 text-sm leading-relaxed text-white/90">
-                        This is a request only. Zach must approve the time before the appointment is confirmed.
-                      </div>
-                      <a href={bookingSmsHref} onClick={() => recordBookingStart(selectedService)} className="block rounded-2xl bg-white px-5 py-4 text-center font-black text-slate-900 shadow-md transition-transform hover:scale-105">
-                        Text Zach to Request This Time
-                      </a>
-                    </div>
+                  <div className="border-t border-slate-100 bg-amber-50 p-5 text-sm font-semibold leading-relaxed text-amber-900 md:px-8">
+                    Final price is agreed before work begins. Payment is made after the job is complete.
                   </div>
                 </div>
               </motion.section>
@@ -960,8 +1003,8 @@ export default function SeasonalSideHustleWebsite() {
                         <h3 className="text-2xl font-black text-slate-900">View & Agree to Waiver</h3>
                         <p className="mt-2 text-slate-600">Before booking, customers should read the policy and waiver. Then they can continue to the booking page.</p>
                       </div>
-                      <button type="button" onClick={() => goToPage("policy")} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white shadow-md hover:scale-105 transition-transform">
-                        Open Waiver Page
+                      <button type="button" onClick={openWaiver} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white shadow-md hover:scale-105 transition-transform">
+                        Open Waiver
                         <ArrowRight className="h-4 w-4" />
                       </button>
                     </div>
@@ -1003,8 +1046,8 @@ export default function SeasonalSideHustleWebsite() {
                   <div className="grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
                     <div>
                       <div className="mb-4 inline-flex rounded-full bg-white/20 px-4 py-2 text-sm font-bold backdrop-blur-sm">Final Step</div>
-                      <h2 className="mb-3 text-3xl font-black md:text-4xl">Choose a service and text Zach</h2>
-                      <p className="mb-5 text-lg leading-relaxed text-white/90">Pick the service you want, then continue to the scheduling page to request a day and time before sending the booking request.</p>
+                      <h2 className="mb-3 text-3xl font-black md:text-4xl">Choose a service, time, and waiver</h2>
+                      <p className="mb-5 text-lg leading-relaxed text-white/90">Pick the service, request a day and time, read the waiver, then send the booking text.</p>
                       <div className="space-y-4">
                         <div className="rounded-[1.5rem] border border-white/20 bg-white/15 p-4 backdrop-blur-sm">
                           <label className="mb-2 block text-sm font-bold">Pick a service</label>
@@ -1013,6 +1056,29 @@ export default function SeasonalSideHustleWebsite() {
                               <option key={service.job} value={service.job}>{service.job} - {service.pay}</option>
                             ))}
                           </select>
+                        </div>
+
+                        <div className="grid gap-4 md:grid-cols-2">
+                          <div className="rounded-[1.5rem] border border-white/20 bg-white/15 p-4 backdrop-blur-sm">
+                            <label className="mb-2 block text-sm font-bold">Requested date</label>
+                            <input type="date" value={requestedDate} onChange={(e) => setRequestedDate(e.target.value)} className="w-full rounded-2xl bg-white px-4 py-3 font-semibold text-slate-900 outline-none" />
+                          </div>
+                          <div className="rounded-[1.5rem] border border-white/20 bg-white/15 p-4 backdrop-blur-sm">
+                            <label className="mb-2 block text-sm font-bold">Requested time</label>
+                            <select value={requestedTime} onChange={(e) => setRequestedTime(e.target.value)} className="w-full rounded-2xl bg-white px-4 py-3 font-semibold text-slate-900 outline-none">
+                              <option>After School</option>
+                              <option>4:00 PM</option>
+                              <option>4:30 PM</option>
+                              <option>5:00 PM</option>
+                              <option>5:30 PM</option>
+                              <option>Weekend Morning</option>
+                              <option>Weekend Afternoon</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-relaxed text-amber-900">
+                          Requested times are not approved automatically. Zach must agree before the service is confirmed.
                         </div>
 
                         <div className="rounded-[1.5rem] border border-white/20 bg-white/15 p-4 backdrop-blur-sm">
@@ -1042,8 +1108,8 @@ export default function SeasonalSideHustleWebsite() {
                         {selectedServicePrice}
                       </div>
                       <div className="mb-4 rounded-2xl border border-slate-100 bg-slate-50 p-4 text-slate-700">
-                        <div className="mb-2 text-sm font-bold text-slate-500">Contact</div>
-                        <div className="mb-1 text-2xl font-black tracking-wide">{brand.phone}</div>
+                        <div className="mb-2 text-sm font-bold text-slate-500">Booking step</div>
+                        <div className="mb-1 text-2xl font-black tracking-wide">Text or call to request</div>
                         <div className="inline-flex items-center gap-2 text-sm text-slate-600"><MapPin className="h-4 w-4" /> {brand.city}</div>
                       </div>
                       <div className="mb-4 flex items-center gap-4">
@@ -1053,12 +1119,19 @@ export default function SeasonalSideHustleWebsite() {
                         <div className="text-sm text-slate-600">This QR code is real and scannable. After you publish the site, people can scan it to open a text to Zach.</div>
                       </div>
                       <div className="grid gap-3">
-                        <button type="button" onClick={() => {
-                          setActivePage("schedule")
-                          setTimeout(() => scheduleSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50)
-                        }} className="block rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-4 text-center font-black text-white shadow-md transition-transform hover:scale-105">
-                          Continue to Schedule
+                        <button type="button" onClick={openWaiver} className="block rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-4 text-center font-black text-white shadow-md transition-transform hover:scale-105">
+                          View Waiver
                         </button>
+                        <a href={bookingSmsHref} onClick={(event) => {
+                          if (!policyRead) {
+                            event.preventDefault()
+                            openWaiver()
+                            return
+                          }
+                          recordBookingStart(selectedService)
+                        }} className={`block rounded-2xl px-5 py-4 text-center font-black shadow-md transition-transform hover:scale-105 ${policyRead ? "bg-slate-900 text-white" : "bg-slate-200 text-slate-500"}`}>
+                          Text Zach To Request
+                        </a>
                         <a href={telHref} className="block rounded-2xl bg-slate-900 px-5 py-4 text-center font-black text-white shadow-md transition-transform hover:scale-105">Call Zach</a>
                       </div>
                     </div>
@@ -1067,35 +1140,103 @@ export default function SeasonalSideHustleWebsite() {
               </motion.section>
             )}
 
+            {activePage === "area" && (
+              <motion.section key="area" ref={areaSectionRef} {...pageMotion} className="mb-12">
+                <div className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white bg-white shadow-xl">
+                  <div className="bg-gradient-to-r from-slate-950 via-sky-800 to-teal-700 p-6 text-white md:p-8">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur">
+                      <MapPin className="h-4 w-4" />
+                      Service Area
+                    </div>
+                    <h2 className="mb-2 text-3xl font-black md:text-4xl">Where Services Are Available</h2>
+                    <p className="max-w-2xl text-white/85">
+                      Check the current service area and outdoor-only rules before requesting a job.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-6 p-6 md:p-8 lg:grid-cols-[1fr_0.9fr]">
+                    <div className="space-y-4">
+                      <div className="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5">
+                        <div className="mb-2 text-sm font-bold text-emerald-700">Service area</div>
+                        <div className="text-xl font-black text-slate-900">S. FL Avenir Coral Isles Circle</div>
+                        <p className="mt-2 text-sm font-semibold text-emerald-800">Outdoor-only services for now.</p>
+                      </div>
+                      <div className="rounded-[1.5rem] border border-amber-100 bg-amber-50 p-5">
+                        <div className="mb-2 text-sm font-bold text-amber-800">Before work starts</div>
+                        <p className="font-semibold leading-relaxed text-amber-900">The service, price, day, time, and policy must be clear before Zach begins.</p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-[1.5rem] bg-slate-900 p-5 text-white shadow-lg">
+                      <div className="mb-4 text-sm font-bold text-sky-200">Before requesting</div>
+                      <div className="space-y-3">
+                        {[
+                          "The job must be outside.",
+                          "Everything should be ready in the front yard.",
+                          "The time is confirmed only after Zach agrees.",
+                          "The policy must be read before work starts.",
+                        ].map((item, index) => (
+                          <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/10 p-4">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm font-black text-slate-900">{index + 1}</div>
+                            <div className="pt-0.5 text-sm font-semibold text-white/90">{item}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-5 rounded-2xl bg-white/10 p-4 text-sm leading-relaxed text-white/85">
+                        This keeps the service simple, local, and safe.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.section>
+            )}
+
             {activePage === "stats" && (
-              <motion.section key="stats" ref={statsSectionRef} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.28 }} className="mb-12">
+              <motion.section key="stats" ref={statsSectionRef} {...pageMotion} className="mb-12">
                 <div className="mx-auto max-w-6xl space-y-6">
-                  <div className="rounded-[2rem] border border-white bg-white p-6 shadow-xl md:p-8">
+                  <div className="overflow-hidden rounded-[2rem] border border-white bg-white shadow-xl">
+                    <div className="bg-gradient-to-r from-slate-950 via-teal-800 to-sky-700 p-6 text-white md:p-8">
                     <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
                       <div>
-                        <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-bold text-emerald-700">
+                        <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur">
                           <BarChart3 className="h-4 w-4" />
                           Website Activity
                         </div>
                         <h2 className="mb-2 text-3xl font-black md:text-4xl">Visits and service bookings</h2>
-                        <p className="max-w-2xl text-slate-600">
+                        <p className="max-w-2xl text-white/85">
                           This tab shows visits and service requests tracked on this device.
                         </p>
                       </div>
-                      <button type="button" onClick={resetStats} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-slate-700 hover:bg-slate-100">
+                      <motion.button type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={resetStats} className="rounded-2xl bg-white/15 px-4 py-3 text-sm font-black text-white shadow-sm ring-1 ring-white/20 backdrop-blur hover:bg-white/20">
                         Clear Stats
-                      </button>
+                      </motion.button>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-3">
+                    <div className="rounded-[1.5rem] border border-white/15 bg-white/10 p-5 backdrop-blur">
+                      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                          <div className="text-sm font-bold text-sky-100">Activity counter</div>
+                          <div className="text-2xl font-black">{activityCount} total actions</div>
+                        </div>
+                        <div className="rounded-full bg-white/15 px-4 py-2 text-sm font-bold">
+                          {stats.visits ?? 0} visits + {totalBookings} requests
+                        </div>
+                      </div>
+                      <div className="h-4 overflow-hidden rounded-full bg-white/15">
+                        <motion.div initial={{ width: 0 }} animate={{ width: `${activityFill}%` }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} className="h-full rounded-full bg-gradient-to-r from-emerald-300 to-sky-200" />
+                      </div>
+                    </div>
+                    </div>
+
+                    <div className="grid gap-4 p-6 md:grid-cols-3 md:p-8">
                       <div className="rounded-[1.5rem] bg-slate-900 p-5 text-white shadow-md">
                         <div className="mb-2 text-sm font-bold text-slate-300">Website visits</div>
-                        <div className="text-5xl font-black">{stats.visits ?? 0}</div>
+                        <motion.div key={stats.visits ?? 0} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="text-5xl font-black">{stats.visits ?? 0}</motion.div>
                         <div className="mt-3 text-sm text-slate-300">Counts once per browser session.</div>
                       </div>
                       <div className="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5 shadow-sm">
                         <div className="mb-2 text-sm font-bold text-emerald-700">Total service requests</div>
-                        <div className="text-5xl font-black text-emerald-800">{totalBookings}</div>
+                        <motion.div key={totalBookings} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="text-5xl font-black text-emerald-800">{totalBookings}</motion.div>
                         <div className="mt-3 text-sm font-semibold text-emerald-700">Counts when someone taps a booking text button.</div>
                       </div>
                       <div className="rounded-[1.5rem] border border-sky-100 bg-sky-50 p-5 shadow-sm">
@@ -1104,6 +1245,40 @@ export default function SeasonalSideHustleWebsite() {
                         <div className="mt-3 text-sm font-semibold text-sky-700">
                           {topBookedService ? `${topBookedService.bookings} requests` : "Start by sending a test request."}
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[2rem] border border-white bg-white p-6 shadow-xl md:p-8">
+                    <div className="mb-5">
+                      <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700">
+                        <Sparkles className="h-4 w-4" />
+                        Activity Center
+                      </div>
+                      <h3 className="text-2xl font-black text-slate-900">Try the stats live</h3>
+                      <p className="mt-1 text-slate-600">Use these buttons to test how the counters move before real customers use the website.</p>
+                    </div>
+
+                    <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
+                      <div>
+                        <label className="mb-2 block text-sm font-bold text-slate-700">Service to test</label>
+                        <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-slate-900 outline-none focus:ring-2 focus:ring-sky-300">
+                          {uniqueServices.map((service) => (
+                            <option key={service.job} value={service.job}>{service.job} - {service.pay}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[32rem]">
+                        <motion.button type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={recordManualVisit} className="rounded-2xl bg-slate-900 px-4 py-3 font-black text-white shadow-md">
+                          Add Visit
+                        </motion.button>
+                        <motion.button type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => recordBookingStart(selectedService)} className="rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-4 py-3 font-black text-white shadow-md">
+                          Add Request
+                        </motion.button>
+                        <motion.button type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => goToPage("booking")} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 font-black text-slate-900 shadow-sm">
+                          Open Booking
+                        </motion.button>
                       </div>
                     </div>
                   </div>

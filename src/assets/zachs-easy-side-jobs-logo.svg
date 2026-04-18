@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 220" role="img" aria-labelledby="title desc">
+  <title id="title">Zach's Easy Side Jobs logo</title>
+  <desc id="desc">A professional logo for a neighborhood outdoor services business.</desc>
+  <defs>
+    <linearGradient id="badge" x1="48" y1="26" x2="170" y2="168" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="70" y1="58" x2="145" y2="145" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="720" height="220" rx="28" fill="#f8fafc"/>
+  <rect x="12" y="12" width="696" height="196" rx="22" fill="#ffffff" stroke="#dbe5df" stroke-width="2"/>
+
+  <g transform="translate(36 32)">
+    <rect x="0" y="0" width="156" height="156" rx="34" fill="url(#badge)"/>
+    <path d="M31 111c24-54 57-69 96-72-2 45-25 75-73 86 14-22 33-39 56-51-31 9-57 31-79 64-4-9-4-18 0-27Z" fill="url(#accent)"/>
+    <path d="M46 83 68 105l47-52" fill="none" stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 128h72" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity=".85"/>
+  </g>
+
+  <g transform="translate(224 50)">
+    <text x="0" y="38" fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" letter-spacing="1.5">ZACH'S EASY</text>
+    <text x="0" y="86" fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="900" letter-spacing="0">SIDE JOBS</text>
+    <g transform="translate(0 111)">
+      <rect x="0" y="0" width="274" height="34" rx="17" fill="#ecfdf5"/>
+      <text x="18" y="23" fill="#0f766e" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="900" letter-spacing="1.2">NEIGHBORHOOD OUTDOOR HELP</text>
+    </g>
+    <path d="M0 103h388" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
