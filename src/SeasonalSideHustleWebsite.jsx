@@ -9,6 +9,7 @@ import {
   Clock3,
   ClipboardCheck,
   DollarSign,
+  HelpCircle,
   Home,
   Phone,
   Shield,
@@ -130,6 +131,29 @@ const policyRules = [
   "I will pay the price of the service selected below."
 ]
 
+const faqs = [
+  {
+    question: "Where does Zach work?",
+    answer: "For now, services are only available in S. FL Avenir Coral Isles Circle."
+  },
+  {
+    question: "Are jobs indoor or outdoor?",
+    answer: "All jobs are outdoor only. Zach will not go inside any house."
+  },
+  {
+    question: "When is a request confirmed?",
+    answer: "A request is confirmed only after Zach agrees to the day, time, and service details."
+  },
+  {
+    question: "When do customers pay?",
+    answer: "Customers pay after the job is finished, based on the service price agreed before work starts."
+  },
+  {
+    question: "Is the policy required?",
+    answer: "Yes. The policy and waiver must be read and agreed to before the service starts."
+  },
+]
+
 const tabs = [
   { name: "Spring", code: "SPR", gradient: "from-emerald-500 to-teal-600", bg: "from-emerald-50 to-teal-50", accent: "text-emerald-700" },
   { name: "Summer", code: "SUM", gradient: "from-amber-500 to-sky-600", bg: "from-amber-50 to-sky-50", accent: "text-amber-800" },
@@ -145,6 +169,7 @@ const navItems = [
   { key: "schedule", label: "Schedule", icon: CalendarDays },
   { key: "booking", label: "Book", icon: Phone },
   { key: "stats", label: "My Stats", icon: BarChart3 },
+  { key: "faq", label: "FAQ", icon: HelpCircle },
   { key: "about", label: "About Me", icon: Star },
   { key: "feedback", label: "Feedback", icon: MessageSquare },
   { key: "safety", label: "Safety", icon: Sparkles },
@@ -173,7 +198,8 @@ export const __testCases = [
   { name: "feedback tab exists", expected: true },
   { name: "feedback form exists", expected: true },
   { name: "stats tab exists", expected: true },
-  { name: "booking stats are saved locally", expected: true }
+  { name: "booking stats are saved locally", expected: true },
+  { name: "faq tab exists", expected: true }
 ]
 
 const pageInfo = Object.fromEntries(navItems.map((item) => [item.key, { label: item.label, icon: item.icon }]))
@@ -257,6 +283,7 @@ export default function SeasonalSideHustleWebsite() {
   const bookingSectionRef = useRef(null)
   const policySectionRef = useRef(null)
   const statsSectionRef = useRef(null)
+  const faqSectionRef = useRef(null)
   const topRef = useRef(null)
 
   const activeTab = tabs.find((tab) => tab.name === activeSeason) ?? tabs[0]
@@ -367,6 +394,7 @@ export default function SeasonalSideHustleWebsite() {
       schedule: scheduleSectionRef,
       booking: bookingSectionRef,
       stats: statsSectionRef,
+      faq: faqSectionRef,
       feedback: feedbackSectionRef,
       safety: safetySectionRef,
     }
@@ -627,6 +655,48 @@ export default function SeasonalSideHustleWebsite() {
                           Choose a service, read the policy, pick a time, and text Zach with the request.
                         </p>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.section>
+            )}
+
+            {activePage === "faq" && (
+              <motion.section key="faq" ref={faqSectionRef} {...pageMotion} className="mb-12">
+                <div className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white bg-white shadow-xl">
+                  <div className="bg-gradient-to-r from-slate-950 via-teal-800 to-sky-700 p-6 text-white md:p-8">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur">
+                      <HelpCircle className="h-4 w-4" />
+                      Customer Questions
+                    </div>
+                    <h2 className="mb-2 text-3xl font-black md:text-4xl">Frequently Asked Questions</h2>
+                    <p className="max-w-2xl text-white/85">
+                      Quick answers for neighbors before they request a service.
+                    </p>
+                  </div>
+
+                  <motion.div variants={staggerContainer} initial="hidden" animate="show" className="grid gap-4 p-6 md:grid-cols-2 md:p-8">
+                    {faqs.map((item, index) => (
+                      <motion.div key={item.question} variants={serviceCardMotion} className="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5 shadow-sm">
+                        <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-black text-white">
+                          {index + 1}
+                        </div>
+                        <h3 className="mb-2 text-xl font-black text-slate-900">{item.question}</h3>
+                        <p className="leading-relaxed text-slate-600">{item.answer}</p>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+
+                  <div className="border-t border-slate-100 bg-gradient-to-r from-emerald-50 to-sky-50 p-6 md:p-8">
+                    <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
+                      <div>
+                        <h3 className="text-2xl font-black text-slate-900">Ready to request a job?</h3>
+                        <p className="mt-2 text-slate-600">Choose a service, pick a requested time, and text Zach to confirm the details.</p>
+                      </div>
+                      <motion.button type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => goToPage("services")} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white shadow-md">
+                        View Services
+                        <ArrowRight className="h-4 w-4" />
+                      </motion.button>
                     </div>
                   </div>
                 </div>
