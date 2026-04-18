@@ -17,6 +17,7 @@ import {
   CalendarDays,
   CheckCircle2,
   BadgeCheck,
+  BarChart3,
   MapPin,
   MessageSquare,
   FileSignature,
@@ -34,82 +35,82 @@ const brand = {
 const featuredIdeas = [
   {
     season: "Spring",
-    emoji: "🌸",
+    code: "SPR",
     title: "Front Yard Cleanup",
-    price: "$10–$20",
+    price: "$10-$20",
     desc: "Pick up sticks, tidy outdoor toys, and help make the front yard look neat."
   },
   {
     season: "Summer",
-    emoji: "☀️",
+    code: "SUM",
     title: "Plant Watering",
-    price: "$6–$10",
+    price: "$6-$10",
     desc: "Water front-yard plants and porch plants in the South Florida heat."
   },
   {
     season: "Fall",
-    emoji: "🍂",
+    code: "FALL",
     title: "Leaf Raking & Bagging",
-    price: "$12–$22",
+    price: "$12-$22",
     desc: "Rake light leaves and bag them in the front yard only."
   },
   {
     season: "Winter",
-    emoji: "❄️",
+    code: "WIN",
     title: "Holiday Decoration Takedown",
-    price: "$8–$15",
+    price: "$8-$15",
     desc: "Help take down lightweight outdoor decorations from the front yard or porch."
   }
 ]
 
 const seasonalJobs = {
   Spring: [
-    { job: "Front yard cleanup", pay: "$10–$20", level: "Easy" },
-    { job: "Plant watering", pay: "$6–$10", level: "Easy" },
-    { job: "Front porch sweeping", pay: "$7–$12", level: "Helpful" },
-    { job: "Driveway bike wash", pay: "$6–$10 each", level: "Easy" },
-    { job: "Scooter wash", pay: "$6–$10 each", level: "Easy" },
-    { job: "Outdoor toy pickup", pay: "$5–$10", level: "Easy" },
-    { job: "Sports gear organizing", pay: "$8–$14", level: "Sporty" },
-    { job: "Outdoor table setup", pay: "$8–$15", level: "Helpful" },
-    { job: "Mailbox card drop-off", pay: "$5–$8", level: "Creative" },
-    { job: "Driveway chalk sign art", pay: "$6–$12", level: "Creative" }
+    { job: "Front yard cleanup", pay: "$10-$20", level: "Easy" },
+    { job: "Plant watering", pay: "$6-$10", level: "Easy" },
+    { job: "Front porch sweeping", pay: "$7-$12", level: "Helpful" },
+    { job: "Driveway bike wash", pay: "$6-$10 each", level: "Easy" },
+    { job: "Scooter wash", pay: "$6-$10 each", level: "Easy" },
+    { job: "Outdoor toy pickup", pay: "$5-$10", level: "Easy" },
+    { job: "Sports gear organizing", pay: "$8-$14", level: "Sporty" },
+    { job: "Outdoor table setup", pay: "$8-$15", level: "Helpful" },
+    { job: "Mailbox card drop-off", pay: "$5-$8", level: "Creative" },
+    { job: "Driveway chalk sign art", pay: "$6-$12", level: "Creative" }
   ],
   Summer: [
-    { job: "Plant watering", pay: "$6–$10", level: "Easy" },
-    { job: "Front yard cleanup", pay: "$10–$20", level: "Easy" },
-    { job: "Driveway bike wash", pay: "$6–$10 each", level: "Easy" },
-    { job: "Scooter wash", pay: "$6–$10 each", level: "Easy" },
-    { job: "Sports gear organizing", pay: "$8–$14", level: "Sporty" },
-    { job: "Outdoor chair setup", pay: "$7–$12", level: "Helpful" },
-    { job: "Outdoor cooler organizing", pay: "$7–$12", level: "Helpful" },
-    { job: "Snack bag setup", pay: "$3–$6 per bag", level: "Creative" },
-    { job: "Drink table setup", pay: "$8–$15", level: "Popular" },
-    { job: "Front porch reading buddy", pay: "$8–$12", level: "Trusted" }
+    { job: "Plant watering", pay: "$6-$10", level: "Easy" },
+    { job: "Front yard cleanup", pay: "$10-$20", level: "Easy" },
+    { job: "Driveway bike wash", pay: "$6-$10 each", level: "Easy" },
+    { job: "Scooter wash", pay: "$6-$10 each", level: "Easy" },
+    { job: "Sports gear organizing", pay: "$8-$14", level: "Sporty" },
+    { job: "Outdoor chair setup", pay: "$7-$12", level: "Helpful" },
+    { job: "Outdoor cooler organizing", pay: "$7-$12", level: "Helpful" },
+    { job: "Snack bag setup", pay: "$3-$6 per bag", level: "Creative" },
+    { job: "Drink table setup", pay: "$8-$15", level: "Popular" },
+    { job: "Front porch reading buddy", pay: "$8-$12", level: "Trusted" }
   ],
   Fall: [
-    { job: "Leaf raking and bagging", pay: "$12–$22", level: "Popular" },
-    { job: "Front yard cleanup", pay: "$10–$20", level: "Easy" },
-    { job: "Front porch sweeping", pay: "$7–$12", level: "Easy" },
-    { job: "Plant watering", pay: "$6–$10", level: "Easy" },
-    { job: "Sports gear organizing", pay: "$8–$14", level: "Sporty" },
-    { job: "Outdoor chair setup", pay: "$7–$12", level: "Helpful" },
-    { job: "Pumpkin porch setup", pay: "$8–$14", level: "Creative" },
-    { job: "Mailbox flyer delivery", pay: "$5–$8", level: "Helpful" },
-    { job: "Driveway chalk sign art", pay: "$6–$12", level: "Creative" },
-    { job: "Outdoor toy pickup", pay: "$5–$10", level: "Easy" }
+    { job: "Leaf raking and bagging", pay: "$12-$22", level: "Popular" },
+    { job: "Front yard cleanup", pay: "$10-$20", level: "Easy" },
+    { job: "Front porch sweeping", pay: "$7-$12", level: "Easy" },
+    { job: "Plant watering", pay: "$6-$10", level: "Easy" },
+    { job: "Sports gear organizing", pay: "$8-$14", level: "Sporty" },
+    { job: "Outdoor chair setup", pay: "$7-$12", level: "Helpful" },
+    { job: "Pumpkin porch setup", pay: "$8-$14", level: "Creative" },
+    { job: "Mailbox flyer delivery", pay: "$5-$8", level: "Helpful" },
+    { job: "Driveway chalk sign art", pay: "$6-$12", level: "Creative" },
+    { job: "Outdoor toy pickup", pay: "$5-$10", level: "Easy" }
   ],
   Winter: [
-    { job: "Holiday decoration takedown", pay: "$8–$15", level: "Helpful" },
-    { job: "Front porch sweeping", pay: "$7–$12", level: "Easy" },
-    { job: "Outdoor toy bin cleanup", pay: "$6–$10", level: "Easy" },
-    { job: "Sports gear organizing", pay: "$8–$14", level: "Sporty" },
-    { job: "Outdoor table organizing", pay: "$7–$12", level: "Helpful" },
-    { job: "Mailbox card drop-off", pay: "$5–$8", level: "Creative" },
-    { job: "Porch note card sets", pay: "$3–$6 per set", level: "Creative" },
-    { job: "Driveway bike wash", pay: "$6–$10 each", level: "Easy" },
-    { job: "Scooter wash", pay: "$6–$10 each", level: "Easy" },
-    { job: "Front yard cleanup", pay: "$10–$20", level: "Easy" }
+    { job: "Holiday decoration takedown", pay: "$8-$15", level: "Helpful" },
+    { job: "Front porch sweeping", pay: "$7-$12", level: "Easy" },
+    { job: "Outdoor toy bin cleanup", pay: "$6-$10", level: "Easy" },
+    { job: "Sports gear organizing", pay: "$8-$14", level: "Sporty" },
+    { job: "Outdoor table organizing", pay: "$7-$12", level: "Helpful" },
+    { job: "Mailbox card drop-off", pay: "$5-$8", level: "Creative" },
+    { job: "Porch note card sets", pay: "$3-$6 per set", level: "Creative" },
+    { job: "Driveway bike wash", pay: "$6-$10 each", level: "Easy" },
+    { job: "Scooter wash", pay: "$6-$10 each", level: "Easy" },
+    { job: "Front yard cleanup", pay: "$10-$20", level: "Easy" }
   ]
 }
 
@@ -123,17 +124,17 @@ const safety = [
 
 const policyRules = [
   "Everything has to be ready in the front yard.",
-  "I will not go into anybody’s houses.",
+  "I will not go into anybody's houses.",
   "You have to sign a waiver before the service starts.",
   "Please stay inside of your house for him to be comfortable and feel safe.",
   "I will pay the price of the service selected below."
 ]
 
 const tabs = [
-  { name: "Spring", emoji: "🌸", gradient: "from-emerald-400 via-teal-300 to-cyan-300", bg: "from-emerald-50 to-cyan-50", accent: "text-emerald-700" },
-  { name: "Summer", emoji: "☀️", gradient: "from-amber-300 via-orange-300 to-cyan-300", bg: "from-amber-50 to-cyan-50", accent: "text-orange-700" },
-  { name: "Fall", emoji: "🍂", gradient: "from-amber-500 via-orange-400 to-teal-400", bg: "from-amber-50 to-orange-50", accent: "text-amber-800" },
-  { name: "Winter", emoji: "❄️", gradient: "from-sky-300 via-cyan-300 to-teal-300", bg: "from-sky-50 to-cyan-50", accent: "text-sky-800" }
+  { name: "Spring", code: "SPR", gradient: "from-emerald-500 to-teal-600", bg: "from-emerald-50 to-teal-50", accent: "text-emerald-700" },
+  { name: "Summer", code: "SUM", gradient: "from-amber-500 to-sky-600", bg: "from-amber-50 to-sky-50", accent: "text-amber-800" },
+  { name: "Fall", code: "FALL", gradient: "from-orange-500 to-teal-600", bg: "from-orange-50 to-teal-50", accent: "text-orange-800" },
+  { name: "Winter", code: "WIN", gradient: "from-sky-500 to-cyan-600", bg: "from-sky-50 to-cyan-50", accent: "text-sky-800" }
 ]
 
 const navItems = [
@@ -142,7 +143,8 @@ const navItems = [
   { key: "how", label: "How It Works", icon: ClipboardCheck },
   { key: "policy", label: "Policy", icon: Shield },
   { key: "schedule", label: "Schedule", icon: CalendarDays },
-  { key: "booking", label: "Text Zach", icon: Phone },
+  { key: "booking", label: "Book", icon: Phone },
+  { key: "stats", label: "My Stats", icon: BarChart3 },
   { key: "about", label: "About Me", icon: Star },
   { key: "feedback", label: "Feedback", icon: MessageSquare },
   { key: "safety", label: "Safety", icon: Sparkles },
@@ -169,10 +171,70 @@ export const __testCases = [
   { name: "professional hero includes trust badges", expected: true },
   { name: "fully usable contact actions exist", expected: true },
   { name: "feedback tab exists", expected: true },
-  { name: "feedback form exists", expected: true }
+  { name: "feedback form exists", expected: true },
+  { name: "stats tab exists", expected: true },
+  { name: "booking stats are saved locally", expected: true }
 ]
 
 const pageInfo = Object.fromEntries(navItems.map((item) => [item.key, { label: item.label, icon: item.icon }]))
+
+const statsStorageKey = "zachs-easy-side-jobs-stats"
+const statsSessionKey = "zachs-easy-side-jobs-visit-counted"
+
+const emptyStats = {
+  visits: 0,
+  totalBookings: 0,
+  bookingsByService: {},
+  lastUpdated: null,
+}
+
+const loadStats = () => {
+  if (typeof window === "undefined") return emptyStats
+
+  try {
+    const saved = window.localStorage.getItem(statsStorageKey)
+    if (!saved) return emptyStats
+
+    const parsed = JSON.parse(saved)
+    return {
+      ...emptyStats,
+      ...parsed,
+      bookingsByService: parsed.bookingsByService ?? {},
+    }
+  } catch {
+    return emptyStats
+  }
+}
+
+const saveStats = (stats) => {
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(statsStorageKey, JSON.stringify(stats))
+  }
+
+  return stats
+}
+
+const pageMotion = {
+  initial: { opacity: 0, y: 22, scale: 0.99 },
+  animate: { opacity: 1, y: 0, scale: 1 },
+  exit: { opacity: 0, y: -14, scale: 0.99 },
+  transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
+}
+
+const staggerContainer = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.055,
+      delayChildren: 0.04,
+    },
+  },
+}
+
+const serviceCardMotion = {
+  hidden: { opacity: 0, y: 14, scale: 0.98 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.26, ease: [0.22, 1, 0.36, 1] } },
+}
 
 export default function SeasonalSideHustleWebsite() {
   const [showPolicyGate, setShowPolicyGate] = useState(false)
@@ -184,6 +246,7 @@ export default function SeasonalSideHustleWebsite() {
   const [activePage, setActivePage] = useState("home")
   const [requestedDate, setRequestedDate] = useState("")
   const [requestedTime, setRequestedTime] = useState("After School")
+  const [stats, setStats] = useState(loadStats)
 
   const jobsSectionRef = useRef(null)
   const aboutSectionRef = useRef(null)
@@ -193,9 +256,24 @@ export default function SeasonalSideHustleWebsite() {
   const safetySectionRef = useRef(null)
   const bookingSectionRef = useRef(null)
   const policySectionRef = useRef(null)
+  const statsSectionRef = useRef(null)
   const topRef = useRef(null)
 
   const activeTab = tabs.find((tab) => tab.name === activeSeason) ?? tabs[0]
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    if (window.sessionStorage.getItem(statsSessionKey)) return
+
+    window.sessionStorage.setItem(statsSessionKey, "true")
+    setStats((currentStats) =>
+      saveStats({
+        ...currentStats,
+        visits: (currentStats.visits ?? 0) + 1,
+        lastUpdated: new Date().toISOString(),
+      })
+    )
+  }, [])
 
   useEffect(() => {
     setSearch("")
@@ -210,19 +288,46 @@ export default function SeasonalSideHustleWebsite() {
   const allJobCount = Object.values(seasonalJobs).reduce((sum, jobs) => sum + jobs.length, 0)
   const allServices = Object.values(seasonalJobs).flat()
   const uniqueServices = [...new Map(allServices.map((item) => [item.job, item])).values()]
+  const bookingRows = uniqueServices
+    .map((service) => ({
+      ...service,
+      bookings: stats.bookingsByService?.[service.job] ?? 0,
+    }))
+    .sort((a, b) => b.bookings - a.bookings || a.job.localeCompare(b.job))
+  const totalBookings = stats.totalBookings ?? 0
+  const topBookedService = bookingRows.find((service) => service.bookings > 0)
+  const lastUpdated = stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleString() : "Not yet"
 
   const selectedServicePrice = uniqueServices.find((item) => item.job === selectedService)?.pay ?? "Price agreed before starting"
   const selectedServicePriceUsd = `${selectedServicePrice} USD`
   const requestedSlot = requestedDate ? `${requestedDate} at ${requestedTime}` : `Not selected yet (${requestedTime})`
 
-  const smsTemplate = `Hi! I’d like to book a service.%0A%0AName:%0AAddress:%0AService:${encodeURIComponent(selectedService)}%0APrice:${encodeURIComponent(selectedServicePrice)}%0ADay/Time:%0A`
-  const smsHref = `sms:${brand.phoneDigits}?body=${`Hi! I’d like to book a service.%0A%0AName:%0AAddress:%0AService:${encodeURIComponent(selectedService)}%0APrice:${encodeURIComponent(selectedServicePrice)}%0ARequested Date/Time:${encodeURIComponent(requestedSlot)}%0AThis request is not confirmed until Zach agrees to the time.%0A`}`
+  const smsTemplate = `Hi! I'd like to book a service.%0A%0AName:%0AAddress:%0AService:${encodeURIComponent(selectedService)}%0APrice:${encodeURIComponent(selectedServicePrice)}%0ADay/Time:%0A`
   const telHref = `tel:${brand.phoneDigits}`
+  const bookingSmsHref = `sms:${brand.phoneDigits}?body=${`Hi! I'd like to book a service.%0A%0AName:%0AAddress:%0AService:${encodeURIComponent(selectedService)}%0APrice:${encodeURIComponent(selectedServicePrice)}%0ARequested Date/Time:${encodeURIComponent(requestedSlot)}%0AThis request is not confirmed until Zach agrees to the time.%0A`}`
+  const professionalAutoReplyMessage = `Hi! Thanks for reaching out.\n\nHere are my services:\n- Front Yard Cleanup ($10-$20)\n- Plant Watering ($6-$10)\n- Leaf Raking & Bagging ($12-$22)\n- Porch / Driveway Sweeping ($7-$12)\n\nAll jobs are outdoor only and require a quick agreement before work starts.\n\nWhat service do you need?`
 
-  const autoReplyMessage = `Hi! Thanks for reaching out 😊\n\nHere are my services:\n• Front Yard Cleanup ($10–$20)
-• Plant Watering ($6–$10)
-• Leaf Raking & Bagging ($12–$22)
-• Porch / Driveway Sweeping ($7–$12)\n\nAll jobs are outdoor only and require a quick agreement 👍\n\nWhat job do you need?`
+  const recordBookingStart = (serviceName = selectedService) => {
+    setStats((currentStats) => {
+      const bookingsByService = currentStats.bookingsByService ?? {}
+      return saveStats({
+        ...currentStats,
+        totalBookings: (currentStats.totalBookings ?? 0) + 1,
+        bookingsByService: {
+          ...bookingsByService,
+          [serviceName]: (bookingsByService[serviceName] ?? 0) + 1,
+        },
+        lastUpdated: new Date().toISOString(),
+      })
+    })
+  }
+
+  const resetStats = () => {
+    setStats(saveStats(emptyStats))
+    if (typeof window !== "undefined") {
+      window.sessionStorage.removeItem(statsSessionKey)
+    }
+  }
 
   const handleDropdownToggle = (season) => {
     if (openSeason === season) {
@@ -261,6 +366,7 @@ export default function SeasonalSideHustleWebsite() {
       policy: policySectionRef,
       schedule: scheduleSectionRef,
       booking: bookingSectionRef,
+      stats: statsSectionRef,
       feedback: feedbackSectionRef,
       safety: safetySectionRef,
     }
@@ -284,12 +390,12 @@ export default function SeasonalSideHustleWebsite() {
         {showPolicyGate && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
             <motion.div initial={{ scale: 0.92, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.96, opacity: 0 }} className="w-full max-w-lg rounded-3xl bg-white p-6 text-center shadow-2xl">
-              <div className="mb-4 text-5xl">⚠️</div>
+              <div className="mb-4 text-5xl">!</div>
               <h2 className="mb-2 text-2xl font-black">Read Policy First</h2>
               <p className="mb-4 text-slate-600">Before booking a service, please read the policy page.</p>
               <div className="mb-5 flex items-center justify-center gap-2 text-sm font-semibold text-slate-500">
                 <Shield className="h-4 w-4" />
-                <span>Policy → Done → Booking</span>
+                <span>Policy - Done - Booking</span>
               </div>
               <button type="button" onClick={() => {
                 setShowPolicyGate(false)
@@ -310,7 +416,7 @@ export default function SeasonalSideHustleWebsite() {
         {activePage === "policy" && (
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2">
             <button type="button" onClick={continueFromPolicy} className="rounded-full bg-green-500 px-6 py-3 font-bold text-white shadow-lg ring-4 ring-green-200">
-              Done ✓ Continue to Booking
+              Done - Continue to Booking
             </button>
           </motion.div>
         )}
@@ -323,11 +429,11 @@ export default function SeasonalSideHustleWebsite() {
           <motion.nav initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="sticky top-0 z-20 mb-6 rounded-[1.5rem] border border-white bg-white/85 px-4 py-3 shadow-lg backdrop-blur">
             <div className="mb-3 flex items-center justify-center gap-2 text-sm font-semibold text-slate-500">
               <Sparkles className="h-4 w-4" />
-              <span>Move left to right from services to texting for the easiest booking path</span>
+              <span>Choose a service, read the policy, then request a time.</span>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               {navItems.map(({ key, label, icon: Icon }) => (
-                <button key={key} type="button" onClick={() => goToPage(key)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold transition-all ${
+                <motion.button key={key} type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} onClick={() => goToPage(key)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold transition-all ${
                   activePage === key
                     ? key === "booking"
                       ? "scale-105 bg-gradient-to-r from-teal-600 to-sky-500 text-white shadow-md"
@@ -336,7 +442,7 @@ export default function SeasonalSideHustleWebsite() {
                 }`}>
                   <Icon className="h-4 w-4" />
                   <span>{label}</span>
-                </button>
+                </motion.button>
               ))}
             </div>
           </motion.nav>
@@ -371,29 +477,29 @@ export default function SeasonalSideHustleWebsite() {
                     <div>
                       <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white bg-white/80 px-4 py-2 text-sm font-semibold shadow-sm">
                         <BadgeCheck className="h-4 w-4" />
-                        <span>Professional Outdoor Service Website</span>
+                        <span>Outdoor services for neighbors</span>
                       </div>
                       <h1 className="mb-4 text-4xl font-black leading-none tracking-tight md:text-6xl">
                         {brand.businessName}
                         <span className="block bg-gradient-to-r from-teal-700 via-emerald-500 to-sky-500 bg-clip-text text-transparent">
-                          simple, safe, and ready for customers
+                          simple, safe, and easy to request
                         </span>
                       </h1>
                       <p className="mb-6 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
-                        A polished website for South Florida neighbors to browse services, see prices, read the policy, and book Zach quickly by text.
+                        Browse services, see prices, read the policy, and request a time by text.
                       </p>
                       <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
-                        Only in S. FL Avenir Coral Isles Circle for now...
+                        Only in S. FL Avenir Coral Isles Circle for now. Outdoor-only services.
                       </div>
                       <div className="mb-6 flex flex-wrap gap-3">
-                        <a href={smsHref} className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-3 font-bold text-white shadow-lg transition-transform hover:scale-105">
+                        <a href={bookingSmsHref} onClick={() => recordBookingStart(selectedService)} className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-teal-600 to-sky-500 px-5 py-3 font-bold text-white shadow-lg transition-transform hover:scale-105">
                           <MessageSquare className="h-4 w-4" />
                           Text to Book
                         </a>
                       </div>
                       <div className="flex flex-wrap gap-3 text-sm font-semibold">
                         <div className="rounded-full bg-emerald-100 px-4 py-2 text-emerald-700">Clear pricing</div>
-                        <div className="rounded-full bg-amber-100 px-4 py-2 text-amber-800">Fast booking</div>
+                        <div className="rounded-full bg-amber-100 px-4 py-2 text-amber-800">Easy requests</div>
                         <div className="rounded-full bg-sky-100 px-4 py-2 text-sky-700">Outdoor only</div>
                       </div>
                     </div>
@@ -453,76 +559,72 @@ export default function SeasonalSideHustleWebsite() {
                       <Star className="h-4 w-4" />
                       About Zach
                     </div>
-                    <h2 className="text-4xl font-black tracking-tight text-slate-900 md:text-5xl">Why this even exists</h2>
+                    <h2 className="text-4xl font-black tracking-tight text-slate-900 md:text-5xl">About Zach</h2>
                     <p className="mt-3 max-w-3xl text-lg leading-relaxed text-slate-700">
-                      This is the official story of how a kid, some free time, and a strong respect for cash turned into a neighborhood service website.
+                      Zach helps neighbors with simple outdoor jobs after school and on weekends.
                     </p>
                   </div>
 
                   <div className="grid gap-6 p-6 md:p-8 lg:grid-cols-[1.05fr_0.95fr]">
                     <div className="space-y-5">
                       <div className="rounded-[1.5rem] border border-yellow-100 bg-yellow-50 p-5">
-                        <h3 className="mb-2 text-2xl font-black text-slate-900">The origin story</h3>
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">Reliable outdoor help</h3>
                         <p className="text-base leading-relaxed text-slate-700">
-                          I was bored and loved helping. That is a dangerous combination because it creates productivity.
-                          Instead of just sitting around, I figured I could help people out, stay busy, and make the day less boring.
+                          I help with simple front-yard jobs like cleanup, watering, sweeping, and bike washes. Every job stays outside and starts only after the service details are clear.
                         </p>
                       </div>
 
                       <div className="rounded-[1.5rem] border border-sky-100 bg-sky-50 p-5">
-                        <h3 className="mb-2 text-2xl font-black text-slate-900">Hockey energy</h3>
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">Good effort</h3>
                         <p className="text-base leading-relaxed text-slate-700">
-                          I play hockey, so I already understand important business skills like effort, speed, balance, and not quitting when something gets annoying.
-                          Basically, if I can chase a puck, I can probably sweep a porch.
+                          I bring a good attitude, clear communication, and steady effort to each job. If a requested service is not safe or clear, I will not start it.
                         </p>
                       </div>
 
                       <div className="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5">
-                        <h3 className="mb-2 text-2xl font-black text-slate-900">Financial honesty</h3>
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">Clear prices</h3>
                         <p className="text-base leading-relaxed text-slate-700">
-                          I love money. Not in a villain way. In a "working hard and getting paid feels awesome" way.
-                          Money means saving up, buying stuff I want, and proving that being helpful can actually pay off.
+                          Prices are listed before the work starts. Payment is made after the job is finished and the service is complete.
                         </p>
                       </div>
                     </div>
 
                     <div className="space-y-5">
                       <div className="rounded-[1.75rem] bg-slate-900 p-6 text-white shadow-lg">
-                        <div className="mb-3 text-sm font-bold uppercase tracking-wide text-sky-200">Zach Stats</div>
+                        <div className="mb-3 text-sm font-bold uppercase tracking-wide text-sky-200">Quick Facts</div>
                         <div className="grid gap-3 sm:grid-cols-2">
                           <div className="rounded-2xl bg-white/10 p-4">
-                            <div className="text-sm text-white/70">Started because</div>
-                            <div className="text-xl font-black">Boredom</div>
+                            <div className="text-sm text-white/70">Service area</div>
+                            <div className="text-xl font-black">Local neighbors</div>
                           </div>
                           <div className="rounded-2xl bg-white/10 p-4">
-                            <div className="text-sm text-white/70">Favorite bonus</div>
-                            <div className="text-xl font-black">Getting paid</div>
+                            <div className="text-sm text-white/70">Work type</div>
+                            <div className="text-xl font-black">Outdoor only</div>
                           </div>
                           <div className="rounded-2xl bg-white/10 p-4">
-                            <div className="text-sm text-white/70">Sport</div>
-                            <div className="text-xl font-black">Hockey</div>
+                            <div className="text-sm text-white/70">Availability</div>
+                            <div className="text-xl font-black">After school</div>
                           </div>
                           <div className="rounded-2xl bg-white/10 p-4">
-                            <div className="text-sm text-white/70">Business mood</div>
-                            <div className="text-xl font-black">Helpful but hilarious</div>
+                            <div className="text-sm text-white/70">Main rule</div>
+                            <div className="text-xl font-black">Safety first</div>
                           </div>
                         </div>
                       </div>
 
                       <div className="rounded-[1.5rem] border border-cyan-100 bg-cyan-50 p-5">
-                        <h3 className="mb-3 text-2xl font-black text-slate-900">Things I bring to the job</h3>
+                        <h3 className="mb-3 text-2xl font-black text-slate-900">What to expect</h3>
                         <div className="space-y-3 text-slate-700">
-                          <div className="rounded-2xl bg-white p-4 shadow-sm">A good attitude and at least medium-level comedic value.</div>
-                          <div className="rounded-2xl bg-white p-4 shadow-sm">Real effort, not fake "I touched it once" effort.</div>
-                          <div className="rounded-2xl bg-white p-4 shadow-sm">Outdoor-only service because I like safety and simple rules.</div>
+                          <div className="rounded-2xl bg-white p-4 shadow-sm">Clear service details before work starts.</div>
+                          <div className="rounded-2xl bg-white p-4 shadow-sm">Simple outdoor help completed carefully.</div>
+                          <div className="rounded-2xl bg-white p-4 shadow-sm">No indoor work and no unclear jobs.</div>
                         </div>
                       </div>
 
                       <div className="rounded-[1.5rem] border border-amber-100 bg-gradient-to-r from-amber-50 to-yellow-50 p-5">
-                        <h3 className="mb-2 text-2xl font-black text-slate-900">Final statement</h3>
+                        <h3 className="mb-2 text-2xl font-black text-slate-900">Ready to request a job?</h3>
                         <p className="text-base leading-relaxed text-slate-700">
-                          This business was built on three powerful ideas:
-                          helping people, playing hockey, and respecting the beauty of a paid job well done.
+                          Choose a service, read the policy, pick a time, and text Zach with the request.
                         </p>
                       </div>
                     </div>
@@ -532,30 +634,40 @@ export default function SeasonalSideHustleWebsite() {
             )}
 
             {activePage === "services" && (
-              <motion.section key="services" ref={jobsSectionRef} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.28 }} className="mb-12">
-                <div className="mx-auto max-w-4xl rounded-[2rem] border border-white bg-white/90 p-6 shadow-xl backdrop-blur md:p-8">
-                  <div className="mb-6 flex flex-wrap items-start justify-between gap-4 text-center md:text-left">
-                    <div className="w-full">
-                      <h2 className="mb-2 text-3xl font-black">Season Services</h2>
-                      <p className="mx-auto max-w-2xl text-slate-600 md:mx-0">Open a season dropdown to see jobs, exact prices, and choose the service you want.</p>
-                    </div>
-                    <div className={`mx-auto rounded-full border border-white bg-gradient-to-r px-4 py-2 text-sm font-semibold shadow-sm md:mx-0 ${activeTab.bg} ${activeTab.accent}`}>
-                      {filteredJobs.length} ideas in {activeSeason}
+              <motion.section key="services" ref={jobsSectionRef} {...pageMotion} className="mb-12">
+                <div className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white bg-white/95 shadow-xl backdrop-blur">
+                  <div className="border-b border-slate-100 bg-gradient-to-r from-slate-950 via-teal-800 to-sky-700 p-6 text-white md:p-8">
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+                      <div>
+                        <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur">
+                          <Briefcase className="h-4 w-4" />
+                          Service Catalog
+                        </div>
+                        <h2 className="mb-2 text-3xl font-black md:text-4xl">Seasonal Services</h2>
+                        <p className="max-w-2xl text-white/85">
+                          Browse outdoor jobs by season, compare clear prices, and choose a service to request a time.
+                        </p>
+                      </div>
+                      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }} className="rounded-2xl bg-white/15 px-4 py-3 text-sm font-bold shadow-sm backdrop-blur">
+                        {filteredJobs.length} services in {activeSeason}
+                      </motion.div>
                     </div>
                   </div>
+
+                  <div className="p-6 md:p-8">
 
                   <div className="mb-5 grid gap-4 md:grid-cols-[1fr_auto]">
                     <div className="relative">
                       <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={`Search ${activeSeason.toLowerCase()} services...`} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-300" />
                     </div>
-                    <button type="button" onClick={() => goToPage("how")} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white transition-transform hover:scale-105">
+                    <motion.button type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => goToPage("how")} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white shadow-md transition-colors hover:bg-slate-800">
                       <ClipboardCheck className="h-4 w-4" />
                       See Booking Steps
-                    </button>
+                    </motion.button>
                   </div>
 
                   <div className="mb-6 flex items-center justify-center">
-                    <div className="rounded-full border border-white bg-gradient-to-r from-emerald-100 via-amber-50 to-sky-100 px-5 py-2 text-sm font-bold text-slate-700 shadow-sm">Pick a season below to open the dropdown ↓</div>
+                    <div className="rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-bold text-slate-700 shadow-sm">Select a season to view available services.</div>
                   </div>
 
                   <div className="mb-5 space-y-3">
@@ -565,11 +677,11 @@ export default function SeasonalSideHustleWebsite() {
                       const visibleJobs = isOpen ? jobs.filter((item) => item.job.toLowerCase().includes(search.toLowerCase())) : []
 
                       return (
-                        <motion.div key={tab.name} layout className="overflow-hidden rounded-[1.5rem] border border-white bg-white/70 shadow-sm">
-                          <button type="button" onClick={() => handleDropdownToggle(tab.name)} className={`w-full px-5 py-4 text-left transition-all ${isOpen ? `bg-gradient-to-r ${tab.gradient} text-white` : "bg-white text-slate-800 hover:bg-slate-50"}`}>
+                          <motion.div key={tab.name} layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.24 }} className="overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-sm">
+                            <motion.button type="button" whileHover={{ backgroundColor: isOpen ? undefined : "#f8fafc" }} whileTap={{ scale: 0.995 }} onClick={() => handleDropdownToggle(tab.name)} className={`w-full px-5 py-4 text-left transition-all ${isOpen ? `bg-gradient-to-r ${tab.gradient} text-white` : "bg-white text-slate-800"}`}>
                             <div className="flex items-center justify-between gap-4">
                               <div className="flex items-center gap-3">
-                                <span className="text-2xl">{tab.emoji}</span>
+                                <span className={`flex h-11 min-w-12 items-center justify-center rounded-xl px-2 text-xs font-black tracking-wide ${isOpen ? "bg-white/20 text-white" : "bg-slate-100 text-slate-700"}`}>{tab.code}</span>
                                 <div>
                                   <div className="text-lg font-black">{tab.name}</div>
                                   <div className={`text-sm ${isOpen ? "text-white/85" : "text-slate-500"}`}>{featuredIdeas.find((idea) => idea.season === tab.name)?.title}</div>
@@ -580,11 +692,11 @@ export default function SeasonalSideHustleWebsite() {
                                 <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? "rotate-180" : "rotate-0"}`} />
                               </div>
                             </div>
-                          </button>
+                          </motion.button>
 
                           <AnimatePresence>
                             {isOpen && (
-                              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className={`overflow-hidden border-t border-white bg-gradient-to-br p-5 ${tab.bg}`}>
+                              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }} className={`overflow-hidden border-t border-slate-100 bg-gradient-to-br p-5 ${tab.bg}`}>
                                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                                   <div>
                                     <h3 className="text-2xl font-black">{tab.name} Services</h3>
@@ -593,9 +705,9 @@ export default function SeasonalSideHustleWebsite() {
                                   <div className={`rounded-full bg-white px-4 py-2 text-sm font-bold ${tab.accent}`}>{visibleJobs.length} showing</div>
                                 </div>
 
-                                <div className="grid gap-4 md:grid-cols-2">
+                                <motion.div variants={staggerContainer} initial="hidden" animate="show" className="grid gap-4 md:grid-cols-2">
                                   {visibleJobs.map((item, index) => (
-                                    <motion.button key={item.job} type="button" whileHover={{ y: -4 }} whileTap={{ scale: 0.98 }} onClick={() => {
+                                    <motion.button key={item.job} type="button" variants={serviceCardMotion} whileHover={{ y: -5, boxShadow: "0 18px 34px rgba(15, 23, 42, 0.12)" }} whileTap={{ scale: 0.98 }} onClick={() => {
                                       setSelectedService(item.job)
                                       if (!policyRead) {
                                         setShowPolicyGate(true)
@@ -603,7 +715,7 @@ export default function SeasonalSideHustleWebsite() {
                                       }
                                       setActivePage("schedule")
                                       setTimeout(() => scheduleSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50)
-                                    }} className="rounded-2xl border border-white bg-white px-4 py-4 text-left shadow-md">
+                                    }} className="rounded-2xl border border-white bg-white px-4 py-4 text-left shadow-sm">
                                       <div className="mb-2 flex items-start justify-between gap-3">
                                         <div className="text-lg font-bold leading-tight">{item.job}</div>
                                         <div className="whitespace-nowrap rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">#{index + 1}</div>
@@ -621,7 +733,7 @@ export default function SeasonalSideHustleWebsite() {
                                       </div>
                                     </motion.button>
                                   ))}
-                                </div>
+                                </motion.div>
 
                                 {visibleJobs.length === 0 && <div className="mt-4 rounded-2xl border border-white bg-white/80 px-4 py-4 font-medium text-slate-700">No services matched that search. Try another word.</div>}
                               </motion.div>
@@ -630,6 +742,7 @@ export default function SeasonalSideHustleWebsite() {
                         </motion.div>
                       )
                     })}
+                  </div>
                   </div>
                 </div>
               </motion.section>
@@ -658,7 +771,7 @@ export default function SeasonalSideHustleWebsite() {
                         <label className="mb-2 block text-sm font-bold text-slate-700">Choose a service</label>
                         <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-900 outline-none">
                           {uniqueServices.map((service) => (
-                            <option key={service.job} value={service.job}>{service.job} â€” {service.pay} USD</option>
+                            <option key={service.job} value={service.job}>{service.job} - {service.pay} USD</option>
                           ))}
                         </select>
                       </div>
@@ -672,7 +785,7 @@ export default function SeasonalSideHustleWebsite() {
                           <label className="mb-2 block text-sm font-bold text-slate-700">Requested time</label>
                           <select value={requestedTime} onChange={(e) => setRequestedTime(e.target.value)} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-900 outline-none">
                             <option>After School</option>
-                            <option>4:00 PM</option>
+                          <div className="text-slate-600">4:00 PM - 6:30 PM</div>
                             <option>4:30 PM</option>
                             <option>5:00 PM</option>
                             <option>5:30 PM</option>
@@ -703,9 +816,9 @@ export default function SeasonalSideHustleWebsite() {
                         Requested slot: {requestedSlot}
                       </div>
                       <div className="mb-4 rounded-2xl border border-white/15 bg-white/10 p-4 text-sm leading-relaxed text-white/90">
-                        This is a request only. Zach must approve the time before the appointment is booked.
+                        This is a request only. Zach must approve the time before the appointment is confirmed.
                       </div>
-                      <a href={smsHref} className="block rounded-2xl bg-white px-5 py-4 text-center font-black text-slate-900 shadow-md transition-transform hover:scale-105">
+                      <a href={bookingSmsHref} onClick={() => recordBookingStart(selectedService)} className="block rounded-2xl bg-white px-5 py-4 text-center font-black text-slate-900 shadow-md transition-transform hover:scale-105">
                         Text Zach to Request This Time
                       </a>
                     </div>
@@ -747,11 +860,11 @@ export default function SeasonalSideHustleWebsite() {
                       <div className="space-y-3">
                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
                           <div className="font-black text-slate-900">After School</div>
-                          <div className="text-slate-600">4:00 PM – 6:30 PM</div>
+                          <div className="text-slate-600">4:00 PM - 6:30 PM</div>
                         </div>
                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
                           <div className="font-black text-slate-900">Weekends</div>
-                          <div className="text-slate-600">9:00 AM – 5:00 PM</div>
+                          <div className="text-slate-600">9:00 AM - 5:00 PM</div>
                         </div>
                       </div>
                     </div>
@@ -762,7 +875,7 @@ export default function SeasonalSideHustleWebsite() {
                         Auto Reply Message
                       </div>
                       <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700 whitespace-pre-line">
-                        {autoReplyMessage}
+                        {professionalAutoReplyMessage}
                       </div>
                     </div>
                   </div>
@@ -827,7 +940,7 @@ export default function SeasonalSideHustleWebsite() {
                           <label className="mb-2 block text-sm font-bold">Pick a service</label>
                           <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full rounded-2xl bg-white px-4 py-3 font-semibold text-slate-900 outline-none">
                             {uniqueServices.map((service) => (
-                              <option key={service.job} value={service.job}>{service.job} — {service.pay}</option>
+                              <option key={service.job} value={service.job}>{service.job} - {service.pay}</option>
                             ))}
                           </select>
                         </div>
@@ -838,7 +951,7 @@ export default function SeasonalSideHustleWebsite() {
                             Booking Text Template
                           </div>
                           <div className="rounded-2xl bg-white/90 p-4 text-sm text-slate-700 whitespace-pre-line">
-                            Hi! I’d like to book a service.
+                            Hi! I'd like to book a service.
 
                             Name:
                             Address:
@@ -865,7 +978,7 @@ export default function SeasonalSideHustleWebsite() {
                       </div>
                       <div className="mb-4 flex items-center gap-4">
                         <div className="flex h-24 w-24 items-center justify-center rounded-xl border border-slate-200 bg-white p-2">
-                          <QRCodeSVG value={smsHref} size={80} includeMargin />
+                          <QRCodeSVG value={bookingSmsHref} size={80} includeMargin />
                         </div>
                         <div className="text-sm text-slate-600">This QR code is real and scannable. After you publish the site, people can scan it to open a text to Zach.</div>
                       </div>
@@ -878,6 +991,89 @@ export default function SeasonalSideHustleWebsite() {
                         </button>
                         <a href={telHref} className="block rounded-2xl bg-slate-900 px-5 py-4 text-center font-black text-white shadow-md transition-transform hover:scale-105">Call Zach</a>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.section>
+            )}
+
+            {activePage === "stats" && (
+              <motion.section key="stats" ref={statsSectionRef} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.28 }} className="mb-12">
+                <div className="mx-auto max-w-6xl space-y-6">
+                  <div className="rounded-[2rem] border border-white bg-white p-6 shadow-xl md:p-8">
+                    <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+                      <div>
+                        <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-bold text-emerald-700">
+                          <BarChart3 className="h-4 w-4" />
+                          Website Activity
+                        </div>
+                        <h2 className="mb-2 text-3xl font-black md:text-4xl">Visits and service bookings</h2>
+                        <p className="max-w-2xl text-slate-600">
+                          This tab shows visits and service requests tracked on this device.
+                        </p>
+                      </div>
+                      <button type="button" onClick={resetStats} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-slate-700 hover:bg-slate-100">
+                        Clear Stats
+                      </button>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="rounded-[1.5rem] bg-slate-900 p-5 text-white shadow-md">
+                        <div className="mb-2 text-sm font-bold text-slate-300">Website visits</div>
+                        <div className="text-5xl font-black">{stats.visits ?? 0}</div>
+                        <div className="mt-3 text-sm text-slate-300">Counts once per browser session.</div>
+                      </div>
+                      <div className="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5 shadow-sm">
+                        <div className="mb-2 text-sm font-bold text-emerald-700">Total service requests</div>
+                        <div className="text-5xl font-black text-emerald-800">{totalBookings}</div>
+                        <div className="mt-3 text-sm font-semibold text-emerald-700">Counts when someone taps a booking text button.</div>
+                      </div>
+                      <div className="rounded-[1.5rem] border border-sky-100 bg-sky-50 p-5 shadow-sm">
+                        <div className="mb-2 text-sm font-bold text-sky-700">Most requested service</div>
+                        <div className="text-2xl font-black text-sky-900">{topBookedService?.job ?? "No bookings yet"}</div>
+                        <div className="mt-3 text-sm font-semibold text-sky-700">
+                          {topBookedService ? `${topBookedService.bookings} requests` : "Start by sending a test request."}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[2rem] border border-white bg-white p-6 shadow-xl md:p-8">
+                    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <h3 className="text-2xl font-black text-slate-900">Requests by service</h3>
+                        <p className="mt-1 text-sm font-semibold text-slate-500">Last updated: {lastUpdated}</p>
+                      </div>
+                      <div className="rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700">
+                        {uniqueServices.length} services tracked
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      {bookingRows.map((service) => {
+                        const percent = totalBookings > 0 ? Math.round((service.bookings / totalBookings) * 100) : 0
+
+                        return (
+                          <div key={service.job} className="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-4">
+                            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                              <div>
+                                <div className="font-black text-slate-900">{service.job}</div>
+                                <div className="text-sm font-semibold text-slate-500">{service.pay}</div>
+                              </div>
+                              <div className="rounded-full bg-white px-4 py-2 text-sm font-black text-slate-800 shadow-sm">
+                                {service.bookings} requested
+                              </div>
+                            </div>
+                            <div className="h-3 overflow-hidden rounded-full bg-white">
+                              <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-sky-500" style={{ width: `${percent}%` }} />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+
+                    <div className="mt-5 rounded-[1.5rem] border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-relaxed text-amber-900">
+                      These numbers are saved on this browser. To count every visitor across all devices, the site needs a shared backend or analytics service.
                     </div>
                   </div>
                 </div>
@@ -899,11 +1095,11 @@ export default function SeasonalSideHustleWebsite() {
                       <input type="text" placeholder="Your name" className="w-full rounded-2xl border border-slate-200 px-4 py-3" />
                       <select className="w-full rounded-2xl border border-slate-200 px-4 py-3">
                         <option>Choose a rating</option>
-                        <option>⭐</option>
-                        <option>⭐⭐</option>
-                        <option>⭐⭐⭐</option>
-                        <option>⭐⭐⭐⭐</option>
-                        <option>⭐⭐⭐⭐⭐</option>
+                        <option>Star 1</option>
+                        <option>Star 2</option>
+                        <option>Star 3</option>
+                        <option>Star 4</option>
+                        <option>Star 5</option>
                       </select>
                       <textarea placeholder="Write your feedback here..." className="w-full rounded-2xl border border-slate-200 px-4 py-3" rows={5}></textarea>
                       <button className="w-full rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white transition-transform hover:scale-105">Submit Feedback</button>
