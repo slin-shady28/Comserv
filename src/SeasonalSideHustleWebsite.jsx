@@ -116,6 +116,12 @@ const seasonalJobs = {
   ]
 }
 
+const customService = {
+  job: "Custom outdoor request",
+  pay: "Ask Zach",
+  level: "Custom",
+}
+
 const safety = [
   "Always ask a parent or guardian first.",
   "Work only with people you know nearby.",
@@ -165,6 +171,7 @@ const tabs = [
 const navItems = [
   { key: "home", label: "Home", icon: Home },
   { key: "services", label: "Booking", icon: Briefcase },
+  { key: "custom", label: "Custom", icon: Sparkles },
   { key: "pricing", label: "Pricing", icon: DollarSign },
   { key: "how", label: "How It Works", icon: ClipboardCheck },
   { key: "policy", label: "Policy", icon: Shield },
@@ -182,6 +189,7 @@ export const __testCases = [
   { name: "default season is Spring", expected: "Spring" },
   { name: "each season has at least 10 jobs", expected: true },
   { name: "booking tab exists", expected: true },
+  { name: "custom tab exists", expected: true },
   { name: "policy tab exists", expected: true },
   { name: "jobs follow front yard only policy", expected: true },
   { name: "qr section exists", expected: true },
@@ -328,7 +336,7 @@ export default function SeasonalSideHustleWebsite() {
 
   const allJobCount = Object.values(seasonalJobs).reduce((sum, jobs) => sum + jobs.length, 0)
   const allServices = Object.values(seasonalJobs).flat()
-  const uniqueServices = [...new Map(allServices.map((item) => [item.job, item])).values()]
+  const uniqueServices = [...new Map(allServices.map((item) => [item.job, item])).values(), customService]
   const bookingRows = uniqueServices
     .map((service) => ({
       ...service,
@@ -430,6 +438,7 @@ export default function SeasonalSideHustleWebsite() {
       about: aboutSectionRef,
       how: howRef,
       services: jobsSectionRef,
+      custom: jobsSectionRef,
       pricing: pricingSectionRef,
       policy: policySectionRef,
       booking: bookingSectionRef,
@@ -443,6 +452,13 @@ export default function SeasonalSideHustleWebsite() {
     if (page === "home") {
       setActivePage("home")
       setTimeout(() => topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50)
+      return
+    }
+
+    if (page === "custom") {
+      setSelectedService(customService.job)
+      setActivePage("custom")
+      setTimeout(() => jobsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50)
       return
     }
 
@@ -892,6 +908,53 @@ export default function SeasonalSideHustleWebsite() {
                       )
                     })}
                   </div>
+                  </div>
+                </div>
+              </motion.section>
+            )}
+
+            {activePage === "custom" && (
+              <motion.section key="custom" ref={jobsSectionRef} {...pageMotion} className="mb-12">
+                <div className="mx-auto max-w-3xl overflow-hidden rounded-[2rem] border border-white bg-white/95 shadow-xl backdrop-blur">
+                  <div className="bg-gradient-to-r from-slate-950 via-teal-800 to-sky-700 p-6 text-white md:p-8">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur">
+                      <Sparkles className="h-4 w-4" />
+                      Custom Request
+                    </div>
+                    <h2 className="mb-2 text-3xl font-black md:text-4xl">Custom Outdoor Job</h2>
+                    <p className="max-w-2xl text-white/85">
+                      Request another simple outdoor job. Zach confirms the service and price before work starts.
+                    </p>
+                  </div>
+
+                  <div className="p-6 md:p-8">
+                    <div className="mb-6 rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5">
+                      <div className="mb-3 flex items-start justify-between gap-4">
+                        <div>
+                          <div className="text-2xl font-black text-slate-900">{customService.job}</div>
+                          <div className="mt-2 text-sm font-semibold leading-relaxed text-slate-600">
+                            Good for simple outdoor help that is not listed in the regular service menu.
+                          </div>
+                        </div>
+                        <div className="rounded-full bg-white px-4 py-2 text-sm font-black text-emerald-700 shadow-sm">{customService.pay}</div>
+                      </div>
+                      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold leading-relaxed text-amber-900">
+                        Custom jobs still follow the outdoor-only policy. The price must be agreed before work begins.
+                      </div>
+                    </div>
+
+                    <motion.button type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => {
+                      setSelectedService(customService.job)
+                      if (!policyRead) {
+                        setShowPolicyGate(true)
+                        return
+                      }
+                      setActivePage("booking")
+                      setTimeout(() => bookingSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50)
+                    }} className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white shadow-md">
+                      Request Custom Job
+                      <ArrowRight className="h-4 w-4" />
+                    </motion.button>
                   </div>
                 </div>
               </motion.section>
