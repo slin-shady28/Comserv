@@ -170,11 +170,13 @@ const tabs = [
 
 const navItems = [
   { key: "home", label: "Home", icon: Home },
-  { key: "services", label: "Booking", icon: Briefcase },
+  { key: "key", label: "Key", icon: BadgeCheck },
+  { key: "services", label: "Services", icon: Briefcase },
   { key: "custom", label: "Custom", icon: Sparkles },
   { key: "pricing", label: "Pricing", icon: DollarSign },
   { key: "how", label: "How It Works", icon: ClipboardCheck },
   { key: "policy", label: "Policy", icon: Shield },
+  { key: "booking", label: "Book", icon: Phone },
   { key: "area", label: "Service Area", icon: MapPin },
   { key: "stats", label: "My Stats", icon: BarChart3 },
   { key: "faq", label: "FAQ", icon: HelpCircle },
@@ -189,6 +191,7 @@ export const __testCases = [
   { name: "default season is Spring", expected: "Spring" },
   { name: "each season has at least 10 jobs", expected: true },
   { name: "booking tab exists", expected: true },
+  { name: "key tab exists", expected: true },
   { name: "custom tab exists", expected: true },
   { name: "policy tab exists", expected: true },
   { name: "jobs follow front yard only policy", expected: true },
@@ -217,6 +220,73 @@ const pageInfo = {
   ...Object.fromEntries(navItems.map((item) => [item.key, { label: item.label, icon: item.icon }])),
   booking: { label: "Booking", icon: Phone },
 }
+
+const keyTabs = [
+  {
+    key: "labels",
+    label: "Labels",
+    short: "Job tags",
+    icon: Briefcase,
+  },
+  {
+    key: "prices",
+    label: "Prices",
+    short: "Money",
+    icon: DollarSign,
+  },
+  {
+    key: "booking",
+    label: "Booking",
+    short: "How to book",
+    icon: ClipboardCheck,
+  },
+  {
+    key: "safety",
+    label: "Safety",
+    short: "Rules",
+    icon: Shield,
+  },
+  {
+    key: "seasons",
+    label: "Seasons",
+    short: "Best jobs",
+    icon: SunMedium,
+  },
+  {
+    key: "area",
+    label: "Area",
+    short: "Where",
+    icon: MapPin,
+  },
+  {
+    key: "contact",
+    label: "Contact",
+    short: "Text only",
+    icon: Phone,
+  },
+]
+
+const labelKey = [
+  { label: "Easy", meaning: "Simple work that should be quick and safe.", example: "Plant watering or toy pickup." },
+  { label: "Helpful", meaning: "Useful setup or cleanup for the front yard or porch.", example: "Outdoor table setup or porch sweeping." },
+  { label: "Popular", meaning: "Jobs neighbors may request often.", example: "Leaf raking or bike wash." },
+  { label: "Creative", meaning: "Outdoor jobs with cards, signs, or simple setup.", example: "Driveway chalk sign art." },
+  { label: "Custom", meaning: "A safe outdoor job that is not listed yet.", example: "Customer explains the job first." },
+]
+
+const priceKey = [
+  { title: "Price range", detail: "A range like $10-$20 means the final price depends on the size of the job." },
+  { title: "Ask Zach", detail: "For custom jobs, Zach and the customer agree on the price before any work starts." },
+  { title: "No surprise price", detail: "The service, price, day, and time should be clear before the job begins." },
+  { title: "When to pay", detail: "Payment happens after the job is finished." },
+]
+
+const bookingKey = [
+  { title: "Pick a service", detail: "Choose a listed service or use Custom if the job is not listed." },
+  { title: "Read the policy", detail: "The job must follow the outdoor-only rules before booking." },
+  { title: "Choose a time", detail: "Pick the requested day and time in the booking form." },
+  { title: "Text Zach", detail: "The text opens on the phone. The job is not confirmed until Zach agrees." },
+]
 
 const statsStorageKey = "zachs-easy-side-jobs-stats"
 const statsSessionKey = "zachs-easy-side-jobs-visit-counted"
@@ -285,6 +355,7 @@ export default function SeasonalSideHustleWebsite() {
   const [showPolicyGate, setShowPolicyGate] = useState(false)
   const [showWaiver, setShowWaiver] = useState(false)
   const [policyRead, setPolicyRead] = useState(false)
+  const [activeKeyTab, setActiveKeyTab] = useState("labels")
   const [activeSeason, setActiveSeason] = useState("Spring")
   const [openSeason, setOpenSeason] = useState("Spring")
   const [search, setSearch] = useState("")
@@ -305,6 +376,7 @@ export default function SeasonalSideHustleWebsite() {
   const statsSectionRef = useRef(null)
   const faqSectionRef = useRef(null)
   const areaSectionRef = useRef(null)
+  const keySectionRef = useRef(null)
   const topRef = useRef(null)
 
   const activeTab = tabs.find((tab) => tab.name === activeSeason) ?? tabs[0]
@@ -354,7 +426,6 @@ export default function SeasonalSideHustleWebsite() {
   const requestedSlot = requestedDate ? `${requestedDate} at ${requestedTime}` : `Not selected yet (${requestedTime})`
 
   const smsTemplate = `Hi! I'd like to book a service.%0A%0AName:%0AAddress:%0AService:${encodeURIComponent(selectedService)}%0APrice:${encodeURIComponent(selectedServicePrice)}%0ADay/Time:%0A`
-  const telHref = `tel:${brand.phoneDigits}`
   const bookingSmsHref = `sms:${brand.phoneDigits}?body=${`Hi! I'd like to book a service.%0A%0AName:%0AAddress:%0AService:${encodeURIComponent(selectedService)}%0APrice:${encodeURIComponent(selectedServicePrice)}%0ARequested Date/Time:${encodeURIComponent(requestedSlot)}%0AThis request is not confirmed until Zach agrees to the time.%0A`}`
   const professionalAutoReplyMessage = `Hi! Thanks for reaching out.\n\nHere are my services:\n- Front Yard Cleanup ($10-$20)\n- Plant Watering ($6-$10)\n- Leaf Raking & Bagging ($12-$22)\n- Porch / Driveway Sweeping ($7-$12)\n\nAll jobs are outdoor only and require a quick agreement before work starts.\n\nWhat service do you need?`
 
@@ -435,6 +506,7 @@ export default function SeasonalSideHustleWebsite() {
   const goToPage = (page) => {
     const refMap = {
       home: topRef,
+      key: keySectionRef,
       about: aboutSectionRef,
       how: howRef,
       services: jobsSectionRef,
@@ -546,14 +618,19 @@ export default function SeasonalSideHustleWebsite() {
         <div className="pointer-events-none fixed inset-x-0 top-0 z-0 h-48 bg-gradient-to-r from-emerald-200/35 via-amber-100/30 to-sky-200/35 blur-3xl" />
 
         <div className="mx-auto max-w-7xl px-6 py-8 md:py-10">
-          <motion.nav initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="sticky top-0 z-20 mb-6 rounded-[1.5rem] border border-white bg-white/85 px-4 py-3 shadow-lg backdrop-blur">
-            <div className="mb-3 flex items-center justify-center gap-2 text-sm font-semibold text-slate-500">
-              <Sparkles className="h-4 w-4" />
-              <span>Choose a service, read the policy, then request a time.</span>
+          <motion.nav initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="sticky top-0 z-20 mb-6 overflow-hidden rounded-[1.5rem] border border-white bg-white/90 shadow-lg backdrop-blur">
+            <div className="flex flex-col gap-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+              <div className="min-w-0">
+                <div className="truncate text-sm font-black text-slate-900">{brand.businessName}</div>
+                <div className="text-xs font-semibold text-slate-500">Outdoor-only neighborhood services</div>
+              </div>
+              <div className="rounded-2xl bg-slate-100 px-4 py-2 text-sm font-bold leading-relaxed text-slate-700">
+                Start with Key, choose a service, read Policy, then Book by text.
+              </div>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="site-tab-strip border-t border-slate-100 px-3 py-3">
               {navItems.map(({ key, label, icon: Icon }) => (
-                <motion.button key={key} type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} onClick={() => goToPage(key)} className={`inline-flex items-center gap-2 rounded-full font-bold transition-all ${key === "services" ? "px-5 py-3 text-base" : "px-4 py-2"} ${
+                <motion.button key={key} type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} onClick={() => goToPage(key)} className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all ${
                   activePage === key
                     ? key === "booking"
                       ? "scale-105 bg-gradient-to-r from-teal-600 to-sky-500 text-white shadow-md"
@@ -567,15 +644,19 @@ export default function SeasonalSideHustleWebsite() {
             </div>
           </motion.nav>
 
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mb-6 grid gap-3 rounded-[1.5rem] border border-white bg-white/80 p-4 shadow-sm backdrop-blur md:grid-cols-[1fr_auto_1fr] md:items-center">
             {prevPage && (
               <button type="button" onClick={() => goToPage(prevPage)} className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50">
                 <ArrowLeft className="h-4 w-4" />
                 {pageInfo[prevPage].label}
               </button>
             )}
-            <div className="rounded-full bg-gradient-to-r from-emerald-100 via-amber-50 to-sky-100 px-4 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-white">
-              You are here: {pageInfo[activePage].label}
+            <div className="text-center">
+              <div className="mb-1 text-xs font-black uppercase tracking-wide text-slate-500">Directions</div>
+              <div className="rounded-full bg-gradient-to-r from-emerald-100 via-amber-50 to-sky-100 px-4 py-2 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-white">
+                You are here: {pageInfo[activePage].label}
+              </div>
+              <div className="mt-2 text-xs font-semibold text-slate-500">Use the top tabs or arrows to move around the website.</div>
             </div>
             {nextPage && (
               <button type="button" onClick={() => goToPage(nextPage)} className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50">
@@ -588,10 +669,35 @@ export default function SeasonalSideHustleWebsite() {
           <AnimatePresence mode="wait">
             {activePage === "home" && (
               <motion.div key="home" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.28 }}>
-                <header className="relative mb-10 overflow-hidden rounded-[2rem] border border-white bg-white/90 p-8 shadow-xl backdrop-blur md:p-10">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-50/90 via-white/70 to-cyan-50/90" />
-                  <div className="absolute -right-14 -top-14 h-40 w-40 rounded-full bg-emerald-300/25 blur-3xl" />
-                  <div className="absolute -bottom-16 left-10 h-40 w-40 rounded-full bg-sky-300/25 blur-3xl" />
+                <header className="home-animated-scene relative mb-10 overflow-hidden rounded-[2rem] border border-white/80 p-8 shadow-xl backdrop-blur md:p-10">
+                  <div className="home-sky-glow" />
+                  <div className="home-sun" />
+                  <div className="home-sun-ray home-sun-ray-one" />
+                  <div className="home-sun-ray home-sun-ray-two" />
+                  <div className="home-cloud home-cloud-one" />
+                  <div className="home-cloud home-cloud-two" />
+                  <div className="home-cloud home-cloud-three" />
+                  <div className="home-spotlight" />
+                  <div className="home-path" />
+                  <div className="home-path-stripe home-path-stripe-one" />
+                  <div className="home-path-stripe home-path-stripe-two" />
+                  <div className="home-path-stripe home-path-stripe-three" />
+                  <div className="home-lawn home-lawn-one" />
+                  <div className="home-lawn home-lawn-two" />
+                  <div className="home-yard-line home-yard-line-one" />
+                  <div className="home-yard-line home-yard-line-two" />
+                  <div className="home-yard-card home-yard-card-one">Plant watering</div>
+                  <div className="home-yard-card home-yard-card-two">Bike wash</div>
+                  <div className="home-yard-card home-yard-card-three">Porch sweeping</div>
+                  <div className="home-service-runner">
+                    <span />
+                  </div>
+                  <div className="home-spark home-spark-one" />
+                  <div className="home-spark home-spark-two" />
+                  <div className="home-spark home-spark-three" />
+                  <div className="home-leaf home-leaf-one" />
+                  <div className="home-leaf home-leaf-two" />
+                  <div className="home-leaf home-leaf-three" />
 
                   <div className="relative grid items-start gap-8 lg:grid-cols-[1.2fr_0.8fr]">
                     <div>
@@ -672,6 +778,212 @@ export default function SeasonalSideHustleWebsite() {
                   </div>
                 </header>
               </motion.div>
+            )}
+
+            {activePage === "key" && (
+              <motion.section key="key" ref={keySectionRef} {...pageMotion} className="mb-12">
+                <div className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white bg-white shadow-xl">
+                  <div className="bg-gradient-to-r from-slate-950 via-teal-800 to-sky-700 p-6 text-white md:p-8">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur">
+                      <BadgeCheck className="h-4 w-4" />
+                      Site Key
+                    </div>
+                    <h2 className="mb-2 text-3xl font-black md:text-4xl">What everything means</h2>
+                    <p className="max-w-2xl text-base font-semibold leading-relaxed text-white/85">
+                      This is the quick guide for customers. Each tab explains one part of the website in simple words.
+                    </p>
+                  </div>
+
+                  <div className="p-6 md:p-8">
+                    <div className="mb-5 grid gap-2 rounded-[1.5rem] border border-slate-100 bg-slate-50 p-2 sm:grid-cols-2 lg:grid-cols-4">
+                      {keyTabs.map(({ key, label, short, icon: Icon }) => (
+                        <button key={key} type="button" onClick={() => setActiveKeyTab(key)} className={`flex min-h-16 items-center gap-3 rounded-2xl px-4 py-3 text-left transition ${
+                          activeKeyTab === key
+                            ? "bg-slate-900 text-white shadow-md"
+                            : "bg-white text-slate-700 shadow-sm ring-1 ring-slate-100 hover:bg-slate-100"
+                        }`}>
+                          <Icon className="h-5 w-5 shrink-0" />
+                          <span>
+                            <span className="block text-sm font-black">{label}</span>
+                            <span className={`block text-xs font-semibold ${activeKeyTab === key ? "text-white/70" : "text-slate-500"}`}>{short}</span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {activeKeyTab === "labels" && (
+                      <div className="rounded-[1.5rem] border border-slate-100 bg-slate-50 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-sm font-black text-slate-700">
+                          <Briefcase className="h-4 w-4" />
+                          Service labels
+                        </div>
+                        <p className="mb-4 text-sm font-semibold leading-relaxed text-slate-600">
+                          These words tell customers what kind of service they are looking at.
+                        </p>
+                        <div className="grid gap-3 md:grid-cols-2">
+                          {labelKey.map((item) => (
+                            <div key={item.label} className="rounded-2xl bg-white p-4 shadow-sm">
+                              <div className="mb-1 text-lg font-black text-slate-900">{item.label}</div>
+                              <div className="text-sm font-semibold leading-relaxed text-slate-600">{item.meaning}</div>
+                              <div className="mt-3 rounded-xl bg-slate-50 px-3 py-2 text-xs font-bold text-slate-500">{item.example}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeKeyTab === "prices" && (
+                      <div className="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-sm font-black text-emerald-800">
+                          <DollarSign className="h-4 w-4" />
+                          Price key
+                        </div>
+                        <p className="mb-4 text-sm font-semibold leading-relaxed text-emerald-900">
+                          Prices are meant to be clear before work begins.
+                        </p>
+                        <div className="grid gap-3 text-sm font-semibold leading-relaxed text-emerald-900 md:grid-cols-2">
+                          {priceKey.map((item) => (
+                            <div key={item.title} className="rounded-2xl bg-white/80 p-4">
+                              <div className="mb-1 text-base font-black text-slate-900">{item.title}</div>
+                              <div>{item.detail}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeKeyTab === "booking" && (
+                      <div className="rounded-[1.5rem] border border-sky-100 bg-sky-50 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-sm font-black text-sky-800">
+                          <ClipboardCheck className="h-4 w-4" />
+                          Booking key
+                        </div>
+                        <p className="mb-4 text-sm font-semibold leading-relaxed text-sky-900">
+                          Booking is a request. The appointment is only real after Zach confirms it.
+                        </p>
+                        <div className="grid gap-3 md:grid-cols-2">
+                          {bookingKey.map((step, index) => (
+                            <div key={step.title} className="flex items-start gap-3 rounded-2xl bg-white/80 p-4">
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-sm font-black text-white">{index + 1}</div>
+                              <div>
+                                <div className="font-black text-slate-900">{step.title}</div>
+                                <div className="mt-1 text-sm font-semibold leading-relaxed text-slate-600">{step.detail}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeKeyTab === "safety" && (
+                      <div className="rounded-[1.5rem] border border-amber-100 bg-amber-50 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-sm font-black text-amber-900">
+                          <Shield className="h-4 w-4" />
+                          Safety key
+                        </div>
+                        <p className="mb-4 text-sm font-semibold leading-relaxed text-amber-950">
+                          These rules keep each job simple and safe.
+                        </p>
+                        <div className="grid gap-3 text-sm font-semibold leading-relaxed text-amber-950 md:grid-cols-2">
+                          {[
+                            "Outdoor-only work.",
+                            "Zach does not go inside homes.",
+                            "Everything should be ready in the front yard.",
+                            "A parent or guardian should know about the job.",
+                            "The job is confirmed only after Zach agrees.",
+                            "Payment happens after the job is complete.",
+                          ].map((rule) => (
+                            <div key={rule} className="flex items-start gap-3 rounded-2xl bg-white/80 p-4">
+                              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" />
+                              <span>{rule}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeKeyTab === "seasons" && (
+                      <div className="rounded-[1.5rem] border border-cyan-100 bg-cyan-50 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-sm font-black text-cyan-900">
+                          <SunMedium className="h-4 w-4" />
+                          Season key
+                        </div>
+                        <p className="mb-4 text-sm font-semibold leading-relaxed text-cyan-950">
+                          Seasons help customers find jobs that make sense during the year.
+                        </p>
+                        <div className="grid gap-3 md:grid-cols-4">
+                          {featuredIdeas.map((idea) => (
+                            <div key={idea.season} className="rounded-2xl bg-white/80 p-4 shadow-sm">
+                              <div className="text-lg font-black text-slate-900">{idea.season}</div>
+                              <div className="mt-1 text-sm font-bold text-cyan-800">{idea.title}</div>
+                              <div className="mt-2 text-sm font-semibold text-slate-600">{idea.price}</div>
+                              <div className="mt-3 text-xs font-semibold leading-relaxed text-slate-500">{idea.desc}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeKeyTab === "area" && (
+                      <div className="rounded-[1.5rem] border border-teal-100 bg-teal-50 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-sm font-black text-teal-900">
+                          <MapPin className="h-4 w-4" />
+                          Area key
+                        </div>
+                        <p className="mb-4 text-sm font-semibold leading-relaxed text-teal-950">
+                          The service area is limited for now, so customers should check this before booking.
+                        </p>
+                        <div className="grid gap-3 md:grid-cols-3">
+                          <div className="rounded-2xl bg-white/80 p-4">
+                            <div className="mb-1 text-sm font-black text-teal-800">Where</div>
+                            <div className="font-bold text-slate-800">S. FL Avenir Coral Isles Circle</div>
+                          </div>
+                          <div className="rounded-2xl bg-white/80 p-4">
+                            <div className="mb-1 text-sm font-black text-teal-800">Work area</div>
+                            <div className="font-bold text-slate-800">Front yard and outdoor areas only</div>
+                          </div>
+                          <div className="rounded-2xl bg-white/80 p-4">
+                            <div className="mb-1 text-sm font-black text-teal-800">Not included</div>
+                            <div className="font-bold text-slate-800">No indoor work or entering homes</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeKeyTab === "contact" && (
+                      <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5">
+                        <div className="mb-3 flex items-center gap-2 text-sm font-black text-slate-800">
+                          <Phone className="h-4 w-4" />
+                          Contact key
+                        </div>
+                        <p className="mb-4 text-sm font-semibold leading-relaxed text-slate-600">
+                          The booking text includes the service, price, requested time, and policy note.
+                        </p>
+                        <div className="grid gap-3 md:grid-cols-3">
+                          <div className="rounded-2xl bg-slate-50 p-4">
+                            <div className="mb-1 text-sm font-black text-slate-500">Best button</div>
+                            <div className="font-black text-slate-900">Text Zach To Request</div>
+                          </div>
+                          <div className="rounded-2xl bg-slate-50 p-4">
+                            <div className="mb-1 text-sm font-black text-slate-500">Best action</div>
+                            <div className="font-bold text-slate-800">Text Zach with service, price, day, and time</div>
+                          </div>
+                          <div className="rounded-2xl bg-slate-50 p-4">
+                            <div className="mb-1 text-sm font-black text-slate-500">Confirmed when</div>
+                            <div className="font-bold text-slate-800">Only after Zach agrees to the details</div>
+                          </div>
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-3">
+                          <button type="button" onClick={() => goToPage("booking")} className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-black text-slate-900 shadow-sm ring-1 ring-slate-200">
+                            <MessageSquare className="h-4 w-4" />
+                            Open Booking
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.section>
             )}
 
             {activePage === "about" && (
@@ -1172,7 +1484,7 @@ export default function SeasonalSideHustleWebsite() {
                       </div>
                       <div className="mb-4 rounded-2xl border border-slate-100 bg-slate-50 p-4 text-slate-700">
                         <div className="mb-2 text-sm font-bold text-slate-500">Booking step</div>
-                        <div className="mb-1 text-2xl font-black tracking-wide">Text or call to request</div>
+                        <div className="mb-1 text-2xl font-black tracking-wide">Text Zach to request</div>
                         <div className="inline-flex items-center gap-2 text-sm text-slate-600"><MapPin className="h-4 w-4" /> {brand.city}</div>
                       </div>
                       <div className="mb-4 flex items-center gap-4">
@@ -1195,7 +1507,6 @@ export default function SeasonalSideHustleWebsite() {
                         }} className={`block rounded-2xl px-5 py-4 text-center font-black shadow-md transition-transform hover:scale-105 ${policyRead ? "bg-slate-900 text-white" : "bg-slate-200 text-slate-500"}`}>
                           Text Zach To Request
                         </a>
-                        <a href={telHref} className="block rounded-2xl bg-slate-900 px-5 py-4 text-center font-black text-white shadow-md transition-transform hover:scale-105">Call Zach</a>
                       </div>
                     </div>
                   </div>
